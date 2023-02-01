@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project 1</title>
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <!-- Font Awesome -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/styles.css" />
+  </head>
+  <body>
+    <!-- Navbar start -->
+    <nav
+      id="nav"
+      class="navbar navbar-expand-lg navbar-dark fixed-top navbar-expand btn-primary text-center"
+    >
+      <h1>Project 1 - Movie info and youtube search</h1>
+    </nav>
+    <!-- Navbar end -->
+
+    <!-- Jumbotron start -->
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container text-center ">
+        <h2 id="form-heading" class="w-100" >Search for a movie</h2>
+        <form id="search-form" class="form w-100 d-flex justify-content-center">
+          <div class="form-inline form-group">
+            <div class="input-group w-100">
+              <input
+                class="form-input btn-lg btn-block text-center"
+                type="text"
+                id="search-input"
+                placeholder="Enter movie name"
+                aria-labelledby="form-heading"
+                aria-controls="search"
+              />
+              <div class="btn-block">
+                <button
+                  type="submit"
+                  class="mt-2 btn btn-lg btn-success btn-block w-100"
+                  id="search-button"
+                  aria-label="submit search"
+                >
+                  Search
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <div class="d-flex align-items-center justify-content-center">
+        <button
+          type="button"
+          id="show-fav-btn"
+          class="btn btn-lg btn-block btn-primary w-25"
+          data-toggle="modal"
+          data-target="#modal-1"
+        >
+          Favourites
+        </button>
+        </div>
+
+        <!-- Favourites modal-->
+        <div id="modal-1" class="modal fade" tabindex="-1" role="dialog">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Favourites</h5>
+              </div>
+              <div class="modal-body">
+                <div id="favourite">id="favourite"</div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Favourites modal end-->
+      </div>
+    </div>
+
+    <!-- Jumbotron end -->
+
+    <!-- Content start-->
+    <main>
+      <div class="container">
+        <!-- row 1 start -->
+        <section class="row bg-info text-white mt-2">
+          <div class="col-md-12">
+            <div id="movie-summary">id="movie-summary"</div>
+          </div>
+        </section>
+
+        <!-- row 2 start -->
+        <section class="row bg-secondary text-white mt-2">
+          <div class="col-md-12">
+            <div id="you-tube">id="you-tube"</div>
+          </div>
+        </section>
+      </div>
+    </main>
+    <!-- Content end-->
+
+    <!-- Footer section start -->
+    <section id="footer">
+      <footer class="bg-dark text-center text-white">footer</footer>
+    </section>
+    <!-- Footer section end -->
+
+    <!-- Bootstrap Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- custom JavaScript -->
+    <script src="assets/script.js"></script>
+  </body>
+</html>
