@@ -14,10 +14,17 @@ $("#search-button").on("click", function(event) {
       url: queryURL,
       method: "GET"
     }).then(function(response) {
-        console.log(response);
-    
-    
+       console.log(response);
+
+
     });
-  
+    $.ajax({
+        url: "https://youtube.googleapis.com/youtube/v3/search?q=Terminator&key=AIzaSyDgb40pPDUgfTAJRSL_rNpputm0ksw60N8",
+        method: "GET"
+      }).then(function(response1) {
+          console.log(response1);
+
+          $('iframe').attr("src", "https://www.youtube.com/embed/" + response1.items[1].id.videoId);
+
   });
-  
+})
