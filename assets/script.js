@@ -19,7 +19,7 @@ $("#search-button").on("click", function(event) {
 
     });
     $.ajax({
-        url: "https://youtube.googleapis.com/youtube/v3/search?q=Terminator&key=AIzaSyDgb40pPDUgfTAJRSL_rNpputm0ksw60N8",
+        url: "https://youtube.googleapis.com/youtube/v3/search?q=" + movie + "&key=AIzaSyDgb40pPDUgfTAJRSL_rNpputm0ksw60N8",
         method: "GET"
       }).then(function(response1) {
           console.log(response1);
