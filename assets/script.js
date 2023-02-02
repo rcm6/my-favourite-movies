@@ -24,7 +24,7 @@ $("#search-button").on("click", function(event) {
       }).then(function(response1) {
           console.log(response1);
 
-          $('iframe').attr("src", "https://www.youtube.com/embed/" + response1.items[1].id.videoId);
+          $('iframe').attr("src", "https://www.youtube.com/embed/" + response1.items[0].id.videoId);
 
   });
 })
