@@ -6,7 +6,6 @@ $("#search-button").on("click", function(event) {
     event.preventDefault();
     var movie = $("#search-input").val().trim();
     if(movie){ 
-      
       getMovieInfo(movie);
     }
     else{
@@ -25,14 +24,20 @@ function getMovieInfo(movie){
     method: "GET"
   }).then(function(response) {
     console.log(response);
-    if(!movieHistory.includes(movie)){
-      var movieObject = {
-        name: movie,
-        id: response.imdbID
-      }
-      movieHistory.push(movieObject);
-      localStorage.setItem("searchHistory", JSON.stringify(movieHistory));
+    var movieObject = {
+      name: movie,
+      id: response.imdbID
     }
+   
+    if (movieHistory.filter(e => e.name === movie).length === 0){
+      movieHistory.push(movieObject);
+      if(movieHistory.length >5){
+        movieHistory.shift();
+      }
+      localStorage.setItem("searchHistory", JSON.stringify(movieHistory));
+      console.log(movieHistory);
+    }
+    
 
     var movieCard = $(`
       <div class="card" style="width: 18rem;">
@@ -52,7 +57,7 @@ function getMovieInfo(movie){
   });
 }
 
-function getYouTube(){
+/*function getYouTube(){
   $.ajax({
     url: "https://youtube.googleapis.com/youtube/v3/search?q=" + movie + "&key=AIzaSyDgb40pPDUgfTAJRSL_rNpputm0ksw60N8",
     method: "GET"
@@ -62,4 +67,4 @@ function getYouTube(){
       $('iframe').attr("src", "https://www.youtube.com/embed/" + response1.items[0].id.videoId);
 
 });
-}
+}*/
