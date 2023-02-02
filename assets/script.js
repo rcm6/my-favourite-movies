@@ -1,12 +1,13 @@
 var OMDBapiKey = "1cd5aea2";
 var movieHistory = [];
-
+renderMovieCards();
 
 $("#search-button").on("click", function(event) {
     event.preventDefault();
     var movie = $("#search-input").val().trim();
     if(movie){ 
       getMovieInfo(movie);
+      $("#search-input").val("");
     }
     else{
       alert("Nothing in search box");
@@ -35,11 +36,23 @@ function getMovieInfo(movie){
         movieHistory.shift();
       }
       localStorage.setItem("searchHistory", JSON.stringify(movieHistory));
-      console.log(movieHistory);
+      renderMovieCards();
     }
-    
+  });
+}
 
-    var movieCard = $(`
+function renderMovieCards(){
+  $('#movie-summary').empty();
+  
+  movieHistory = JSON.parse(localStorage.getItem("searchHistory"))||[];
+  
+  for(var i=0; i<movieHistory.length; i++){
+    var queryURL = "https://www.omdbapi.com/?t=" + movieHistory[i].name + "&apikey=" + OMDBapiKey;
+    $.ajax({
+      url: queryURL,
+      method: "GET"
+    }).then(function(response) {
+      var movieCard = $(`
       <div class="card" style="width: 18rem;">
       <img class="card-img-top" src=${response.Poster} alt="Card image cap">
         <div class="card-body">
@@ -52,10 +65,15 @@ function getMovieInfo(movie){
         </div>
       </div>
     `);
-
+    
     $('#movie-summary').append(movieCard);
-  });
+    });
+  }
 }
+  
+  
+  
+ 
 
 /*function getYouTube(){
   $.ajax({
