@@ -1,30 +1,99 @@
 var apiKey = "1cd5aea2";
 
+// creating an array of objects here to test storing data from api
 
-$("#search-button").on("click", function(event) {
-    event.preventDefault();
-  
-    // This line grabs the input from the textbox
-    var movie = $("#search-input").val().trim();
-  
+const movieData = [
+  {
+    id: 1,
+    title: "The Matrix",
+    year: "1999",
+    runtime: "136 min",
+    genre: "Action, Sci-Fi",
+    director: "Lana Wachowski, Lilly Wachowski",
+    actor: "Keanu Reeves, Laurence Fishburne, Carrie-Anne Moss",
+    plot: "When a beautiful stranger leads computer hacker Neo to a forbidding underworld, he discovers the shocking truth--the life he knows is the elaborate deception of an evil cyber-intelligence.",
+    metascore: "73",
+    imdbRating: "8.7",
+    poster:
+      "https://m.media-amazon.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SX300.jpg",
+  },
+];
 
-    var queryURL = "https://www.omdbapi.com/?t=" + movie + "&apikey=" + apiKey;
- 
-    $.ajax({
-      url: queryURL,
-      method: "GET"
-    }).then(function(response) {
-       console.log(response);
+$("#search-button").on("click", function (event) {
+  event.preventDefault();
 
+  // This line grabs the input from the textbox
+  var movie = $("#search-input").val().trim();
 
-    });
-    $.ajax({
-        url: "https://youtube.googleapis.com/youtube/v3/search?q=Terminator&key=AIzaSyDgb40pPDUgfTAJRSL_rNpputm0ksw60N8",
-        method: "GET"
-      }).then(function(response1) {
-          console.log(response1);
+  var queryURL = "https://www.omdbapi.com/?t=" + movie + "&apikey=" + apiKey;
 
-          $('iframe').attr("src", "https://www.youtube.com/embed/" + response1.items[1].id.videoId);
-
+  $.ajax({
+    url: queryURL,
+    method: "GET",
+  }).then(function (response) {
+    console.log(response);
   });
-})
+  $.ajax({
+    url: "https://youtube.googleapis.com/youtube/v3/search?q=Terminator&key=AIzaSyDgb40pPDUgfTAJRSL_rNpputm0ksw60N8",
+    method: "GET",
+  }).then(function (response1) {
+    console.log(response1);
+
+    $("iframe").attr(
+      "src",
+      "https://www.youtube.com/embed/" + response1.items[1].id.videoId
+    );
+  });
+});
+
+
+// query selecting the movie summary div container here 
+
+const movie 
+
+
+
+// creating a function to generate a movie card
+
+const makeMovieCard = () => {
+  // looping through the array of objects to extract the movie data to variables
+  // and then generate the movie card elements inside of movie summary div container
+
+  for (let i = 0; i < movieData.length; i++) {
+    const {
+      id,
+      title,
+      year,
+      runtime,
+      genre,
+      director,
+      actor,
+      plot,
+      metascore,
+      imdbRating,
+      poster,
+    } = movieData[i];
+
+    console.log(
+      id,
+      title,
+      year,
+      runtime,
+      genre,
+      director,
+      actor,
+      plot,
+      metascore,
+      imdbRating,
+      poster
+    );
+
+     
+
+
+
+
+  }
+};
+
+makeMovieCard();
