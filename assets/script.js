@@ -10,7 +10,7 @@ $("#search-button").on("click", function(event) {
       $("#search-input").val("");
     }
     else{
-      alert("Nothing in search box");
+      $('#modal-2').modal('show');
      }
   });
    
@@ -45,7 +45,8 @@ function renderMovieCards(){
   $('#movie-summary').empty();
   
   movieHistory = JSON.parse(localStorage.getItem("searchHistory"))||[];
-  
+  console.log(movieHistory);
+
   for(var i=0; i<movieHistory.length; i++){
     var queryURL = "https://www.omdbapi.com/?t=" + movieHistory[i].name + "&apikey=" + OMDBapiKey;
     $.ajax({
@@ -71,9 +72,6 @@ function renderMovieCards(){
   }
 }
   
-  
-  
- 
 
 /*function getYouTube(){
   $.ajax({
