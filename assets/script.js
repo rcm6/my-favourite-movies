@@ -27,18 +27,17 @@ function getMovieInfo(movie){
   }).then(function(response) {
     
     var movieCard = $(`
-    <div class="pl-3">
-      <div class="card pl-3 pt-3 mb-3 bg-primary text-light" style="width: 12rem";>
-      <h4>${response.Title}</h4>
+      <div class="card" style="width: 18rem;">
+      <img class="card-img-top" src=${response.Poster} alt="Card image cap">
         <div class="card-body">
+        <h4>${response.Title}</h4>
           <h5>${response.Year}</h5>
           <p>${response.Plot}</p>
-          <img src=${response.Poster}>
-          <p>${response.Genre}</p>
-          <p>${response.imdbRating}</p>                           
+          <p>Genre: ${response.Genre}</p>
+          <p>IMDB Rating: ${response.imdbRating}</p>      
+          <a href="#" class="btn btn-dark favourite">Add to Favourites</a>                     
         </div>
       </div>
-    </div>
   `);
   $('#movie-summary').append(movieCard);
 });
