@@ -6,10 +6,7 @@ $("#search-button").on("click", function(event) {
     event.preventDefault();
     var movie = $("#search-input").val().trim();
     if(movie){ 
-      if(!movieHistory.includes(movie)){
-          movieHistory.push(movie);
-          localStorage.setItem("searchHistory", JSON.stringify(movieHistory));
-      }
+      
       getMovieInfo(movie);
     }
     else{
@@ -20,12 +17,23 @@ $("#search-button").on("click", function(event) {
 
 
 function getMovieInfo(movie){
+
   var queryURL = "https://www.omdbapi.com/?t=" + movie + "&apikey=" + OMDBapiKey;
+
   $.ajax({
     url: queryURL,
     method: "GET"
   }).then(function(response) {
-    
+    console.log(response);
+    if(!movieHistory.includes(movie)){
+      var movieObject = {
+        name: movie,
+        id: response.imdbID
+      }
+      movieHistory.push(movieObject);
+      localStorage.setItem("searchHistory", JSON.stringify(movieHistory));
+    }
+
     var movieCard = $(`
       <div class="card" style="width: 18rem;">
       <img class="card-img-top" src=${response.Poster} alt="Card image cap">
@@ -38,11 +46,11 @@ function getMovieInfo(movie){
           <a href="#" class="btn btn-dark favourite">Add to Favourites</a>                     
         </div>
       </div>
-  `);
-  $('#movie-summary').append(movieCard);
-});
-}
+    `);
 
+    $('#movie-summary').append(movieCard);
+  });
+}
 
 function getYouTube(){
   $.ajax({
