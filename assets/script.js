@@ -108,16 +108,19 @@ const renderMovieCard = () => {
     const markup = `
     
 
-    <div class="col-4 col-lg-3 col-xl-2 p-1">
+    <div class="col-4 col-lg-3 col-xl-2 p-1 movie-column">
     <img src="${poster}" alt="movie poster" class="image-fluid" />
     <h2 class="movie-title">${title}</h2>
     <h2 class="release-date">${year}</h2>
     <div class="movie-card-summary">
       <p class="movie-plot">
-          ${plot}
+          ${plot}   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+          Adipisci alias modi repudiandae, atque a voluptate maxime
+          hic officiis autem itaque eligendi dolorum numquam ducimus
+          veritatis fugit qui quis error quos.
       </p>
       <div class="youtube-links">
-        <h2 class="header-youtube">Click to search on Youtube</h2>
+        <h2 class="header-youtube">search on youtube</h2>
         <div class="movie-card-links">
           <ul class="movie-card-list">
             <li class="movie-list-items">
@@ -127,10 +130,10 @@ const renderMovieCard = () => {
               <a href="#">watch a review</a>
             </li>
             <li class="movie-list-items">
-              <a href="#">find actors appearing in this movie</a>
+              <a href="#">about the actors</a>
             </li>
             <li class="movie-list-items">
-              <a href="#">find soundtracks used in this movie</a>
+              <a href="#">movie soundtracks</a>
             </li>
           </ul>
         </div>
