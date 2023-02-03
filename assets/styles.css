@@ -3,3 +3,8 @@
 h1, h2 {
     font-size: 1rem;
 }
+
+#movie-summary{
+    display: flex;
+    justify-content: space-around;
+}
