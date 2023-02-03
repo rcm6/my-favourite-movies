@@ -95,16 +95,16 @@ const renderMovieCard = () => {
     
 
     <div class="col-4 col-lg-3 col-xl-2 p-1">
-    <img src="" alt="movie poster" class="image-fluid" />
-    <h2 class="movie-title">title of movie</h2>
-    <h2 class="release-date">2001</h2>
-    <p class="movie-summary">
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-      Adipisci alias modi repudiandae, atque a voluptate maxime hic
-      officiis autem itaque eligendi dolorum numquam ducimus
-      veritatis fugit qui quis error quos.
+    <img src="${poster}" class="image-fluid" />
+    <h2 class="movie-title">${title}</h2>
+    <h2 class="release-date">${year}</h2>
+    <p class=movie-details>
+      Genre: ${genre} Director: ${director} Actors: ${actor} Metascore: ${metascore} IMDB: ${imdbRating} 
     </p>
-    <h2 class="header-youtube">Click to search on Youtube</h2>
+    <p class="movie-summary">
+      ${plot}
+    </p>
+    <h2 class="header-youtube">Search on Youtube</h2>
     <div class="movie-card-links">
       <ul class="movie-card-list">
         <li class="movie-list-items">
