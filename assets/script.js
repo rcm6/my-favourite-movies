@@ -1,5 +1,6 @@
 var OMDBapiKey = "1cd5aea2";
 var movieHistory = [];
+var movie="";
 renderMovieCards();
 
 $("#search-button").on("click", function(event) {
@@ -7,6 +8,8 @@ $("#search-button").on("click", function(event) {
     var movie = $("#search-input").val().trim();
     if(movie){ 
       getMovieInfo(movie);
+      //call you tube function passing response.title into parameter
+      getYouTube(movie)
       $("#search-input").val("");
     }
     else{
@@ -68,19 +71,27 @@ function renderMovieCards(){
     `);
     
     $('#movie-summary').append(movieCard);
+    
     });
   }
 }
-  
 
-/*function getYouTube(){
+function getYouTube(movie){
+  console.log(movie)
   $.ajax({
-    url: "https://youtube.googleapis.com/youtube/v3/search?q=" + movie + "&key=AIzaSyDgb40pPDUgfTAJRSL_rNpputm0ksw60N8",
-    method: "GET"
-  }).then(function(response1) {
-      console.log(response1);
+    url: "https://youtube.googleapis.com/youtube/v3/search?q="+ movie + " movie 2021&embeddable=true&maxResults=6&key=AIzaSyDgb40pPDUgfTAJRSL_rNpputm0ksw60N8",
+    method: "GET",
+  }).then(function (response1) {
+    console.log(response1);
+    console.log(response1.length);
 
-      $('iframe').attr("src", "https://www.youtube.com/embed/" + response1.items[0].id.videoId);
+    $("#you-tube").find("iframe").remove();
 
-});
-}*/
+    for (i = 0; i < response1.items.length; i++) {
+      console.log("videoID:" + response1.items[i].id.videoId);
+      $("#you-tube").append(
+        `<iframe width="560" height="315" class="col-6" src="https://www.youtube.com/embed/${response1.items[i].id.videoId}" title="YouTube video player"></iframe>`
+      );
+    }
+  });
+}
