@@ -53,6 +53,10 @@ $("#search-button").on("click", function (event) {
 // creating a function to generate a movie card
 
 const renderMovieCard = () => {
+  // emptying child elements from movies div container
+
+  moviesEl.empty();
+
   // looping through the array of objects to extract the movie data to variables
   // and then generate the movie card elements inside of movie summary div container
 
