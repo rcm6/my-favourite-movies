@@ -1,5 +1,10 @@
 /* overide bootsrap h1, h2 styles */
 
-h1, h2 {
-    font-size: 1rem;
+h1,
+h2 {
+  font-size: 1rem;
+}
+
+#movies {
+  background-color: black;
 }

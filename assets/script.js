@@ -1,5 +1,9 @@
 var apiKey = "1cd5aea2";
 
+// query selecting elements
+
+const moviesEl = $("#movies");
+
 // creating an array of objects here to test storing data from api
 
 const movieData = [
@@ -46,16 +50,9 @@ $("#search-button").on("click", function (event) {
   });
 });
 
-
-// query selecting the movie summary div container here 
-
-const movie 
-
-
-
 // creating a function to generate a movie card
 
-const makeMovieCard = () => {
+const renderMovieCard = () => {
   // looping through the array of objects to extract the movie data to variables
   // and then generate the movie card elements inside of movie summary div container
 
@@ -88,12 +85,47 @@ const makeMovieCard = () => {
       poster
     );
 
+    // creating the markup to appear in the movies div container
+
+    const markup = `
+    
+
+    <div class="col-4 col-lg-3 col-xl-2 p-1">
+    <img src="" alt="movie poster" class="image-fluid" />
+    <h2 class="movie-title">title of movie</h2>
+    <h2 class="release-date">2001</h2>
+    <p class="movie-summary">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+      Adipisci alias modi repudiandae, atque a voluptate maxime hic
+      officiis autem itaque eligendi dolorum numquam ducimus
+      veritatis fugit qui quis error quos.
+    </p>
+    <h2 class="header-youtube">Click to search on Youtube</h2>
+    <div class="movie-card-links">
+      <ul class="movie-card-list">
+        <li class="movie-list-items">
+          <a href="#">watch a trailer</a>
+        </li>
+        <li class="movie-list-items">
+          <a href="#">watch a review</a>
+        </li>
+        <li class="movie-list-items">
+          <a href="#">find actors appearing in this movie</a>
+        </li>
+        <li class="movie-list-items">
+          <a href="#">find soundtracks used in this movie</a>
+        </li>
+      </ul>
+    </div>
+    <a href="#" class="add-to-fave">add to favourites</a>
+  </div>
+      
      
+    `;
 
-
-
-
+    // appending to the main movies div container
+    moviesEl.append(markup);
   }
 };
 
-makeMovieCard();
+renderMovieCard();
