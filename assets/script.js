@@ -21,6 +21,20 @@ const movieData = [
     poster:
       "https://m.media-amazon.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SX300.jpg",
   },
+  {
+    id: 2,
+    title: "The Truman Show",
+    year: "1998",
+    runtime: "103 min",
+    genre: "Comedy, Drama",
+    director: "Peter Weir",
+    actor: "Jim Carrey, Ed Harris, Laura Linney",
+    plot: "An insurance salesman discovers his whole life is actually a reality TV show.",
+    metascore: "90",
+    imdbRating: "8.2",
+    poster:
+      "https://m.media-amazon.com/images/M/MV5BMDIzODcyY2EtMmY2MC00ZWVlLTgwMzAtMjQwOWUyNmJjNTYyXkEyXkFqcGdeQXVyNDk3NzU2MTQ@._V1_SX300.jpg",
+  },
 ];
 
 $("#search-button").on("click", function (event) {
@@ -95,33 +109,36 @@ const renderMovieCard = () => {
     
 
     <div class="col-4 col-lg-3 col-xl-2 p-1">
-    <img src="${poster}" class="image-fluid" />
+    <img src="${poster}" alt="movie poster" class="image-fluid" />
     <h2 class="movie-title">${title}</h2>
     <h2 class="release-date">${year}</h2>
-    <p class=movie-details>
-      Genre: ${genre} Director: ${director} Actors: ${actor} Metascore: ${metascore} IMDB: ${imdbRating} 
-    </p>
-    <p class="movie-summary">
-      ${plot}
-    </p>
-    <h2 class="header-youtube">Search on Youtube</h2>
-    <div class="movie-card-links">
-      <ul class="movie-card-list">
-        <li class="movie-list-items">
-          <a href="#">watch a trailer</a>
-        </li>
-        <li class="movie-list-items">
-          <a href="#">watch a review</a>
-        </li>
-        <li class="movie-list-items">
-          <a href="#">find actors appearing in this movie</a>
-        </li>
-        <li class="movie-list-items">
-          <a href="#">find soundtracks used in this movie</a>
-        </li>
-      </ul>
+    <div class="movie-card-summary">
+      <p class="movie-plot">
+          ${plot}
+      </p>
+      <div class="youtube-links">
+        <h2 class="header-youtube">Click to search on Youtube</h2>
+        <div class="movie-card-links">
+          <ul class="movie-card-list">
+            <li class="movie-list-items">
+              <a href="#">watch a trailer</a>
+            </li>
+            <li class="movie-list-items">
+              <a href="#">watch a review</a>
+            </li>
+            <li class="movie-list-items">
+              <a href="#">find actors appearing in this movie</a>
+            </li>
+            <li class="movie-list-items">
+              <a href="#">find soundtracks used in this movie</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="fave-link">
+        <a href="#" class="add-to-fave">add to favourites</a>
+      </div>
     </div>
-    <a href="#" class="add-to-fave">add to favourites</a>
   </div>
       
      
