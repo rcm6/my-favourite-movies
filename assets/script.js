@@ -66,7 +66,7 @@ $("#search-button").on("click", function (event) {
 
 // creating a function to generate a movie card
 
-const renderMovieCard = () => {
+const renderMovieCards = () => {
   // emptying child elements from movies div container
 
   moviesEl.empty();
@@ -109,17 +109,24 @@ const renderMovieCard = () => {
     
 
     <div class="col-4 col-lg-3 col-xl-2 p-1 movie-column">
-    <img src="${poster}" alt="movie poster" class="image-fluid" />
-    <h2 class="movie-title">${title}</h2>
-    <h2 class="release-date">${year}</h2>
+
+    <div class="align-top">
+
+      <img src="${poster}" alt="movie poster" class="image-fluid" />
+      <h2 class="movie-title">${title}</h2>
+      <h2 class="release-date">${year}</h2>
+
+    </div>
+
     <div class="movie-card-summary">
-      <p class="movie-plot">
+      <p class="movie-plot flex-grow-1 d-flex">
           ${plot}   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
           Adipisci alias modi repudiandae, atque a voluptate maxime
           hic officiis autem itaque eligendi dolorum numquam ducimus
           veritatis fugit qui quis error quos.
       </p>
-      <div class="youtube-links">
+      </div>
+      <div class="youtube-links align-bottom align-items-end">
         <h2 class="header-youtube">search on youtube</h2>
         <div class="movie-card-links">
           <ul class="movie-card-list">
@@ -141,7 +148,7 @@ const renderMovieCard = () => {
       <div class="fave-link">
         <a href="#" class="add-to-fave">add to favourites</a>
       </div>
-    </div>
+    
   </div>
       
      
@@ -152,4 +159,4 @@ const renderMovieCard = () => {
   }
 };
 
-renderMovieCard();
+renderMovieCards();

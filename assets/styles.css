@@ -1,5 +1,11 @@
 /* overide bootsrap h1, h2 styles */
 
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 h1,
 h2 {
   font-size: 1rem;
@@ -48,9 +54,18 @@ img {
 
 .header-youtube {
   text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 1.2em;
 }
 
 .movie-list-items {
   list-style: none;
   text-transform: uppercase;
+  text-align: center;
+  padding: 0.5em;
+}
+
+.fave-link {
+  text-align: center;
+  padding: 0.5em;
 }
