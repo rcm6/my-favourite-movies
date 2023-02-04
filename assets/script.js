@@ -116,16 +116,16 @@ function renderMovieCards() {
         <div class="movie-card-links">
           <ul class="movie-card-list">
             <li class="movie-list-items">
-              <a href="#">watch a trailer</a>
+              <a href="#" class="trailer">watch a trailer</a>
             </li>
             <li class="movie-list-items">
-              <a href="#">watch a review</a>
+              <a href="#" class="review">watch a review</a>
             </li>
             <li class="movie-list-items">
-              <a href="#">about the actors</a>
+              <a href="#" class="actors">about the actors</a>
             </li>
             <li class="movie-list-items">
-              <a href="#">movie soundtracks</a>
+              <a href="#" class="soundtracks">movie soundtracks</a>
             </li>
           </ul>
         </div>
@@ -140,6 +140,8 @@ function renderMovieCards() {
 
       $("#movies").append(movieCard);
 
+      searchYoutube();
+
       // invoking the function because once movie card is rendered can attach the event listener to add to fave button
 
       addTofave();
@@ -148,6 +150,70 @@ function renderMovieCards() {
 }
 
 // this function takes in the response object from getMovieInfo and then checks if there is a match within movieHistory object in local storage and will then create a new local storage titled favourites
+
+// creating a helper function to return the movie title
+
+function getMovieTitle(link, clickEvent) {
+  if (link === "favourites") {
+    const target = $(clickEvent.currentTarget);
+
+    const parentEl = $(target.parent().parent());
+
+    const title = $(parentEl[0].children[0].children[1].childNodes[0])
+      .text()
+      .toLowerCase();
+
+    return title;
+  }
+
+  if (link === "trailer") {
+    const target = $(clickEvent.currentTarget);
+
+    const parentEl = $(target.parent().parent().parent().parent().parent());
+
+    const title = $(parentEl[0].children[0].children[1].childNodes[0])
+      .text()
+      .toLowerCase();
+
+    return title;
+  }
+
+  if (link === "review") {
+    const target = $(clickEvent.currentTarget);
+
+    const parentEl = $(target.parent().parent().parent().parent().parent());
+
+    const title = $(parentEl[0].children[0].children[1].childNodes[0])
+      .text()
+      .toLowerCase();
+
+    return title;
+  }
+
+  if (link === "actors") {
+    const target = $(clickEvent.currentTarget);
+
+    const parentEl = $(target.parent().parent().parent().parent().parent());
+
+    const title = $(parentEl[0].children[0].children[1].childNodes[0])
+      .text()
+      .toLowerCase();
+
+    return title;
+  }
+
+  if (link === "soundtracks") {
+    const target = $(clickEvent.currentTarget);
+
+    const parentEl = $(target.parent().parent().parent().parent().parent());
+
+    const title = $(parentEl[0].children[0].children[1].childNodes[0])
+      .text()
+      .toLowerCase();
+
+    return title;
+  }
+}
 
 function addTofave() {
   // console.log(data);
@@ -159,15 +225,7 @@ function addTofave() {
 
     console.log("add to fave button clicked");
 
-    // returns the target button clicked on
-    const target = $(event.currentTarget);
-
-    // traverses the dom tree upwards to parent element of movie title in movie card
-    const parentEl = $(target.parent().parent());
-    // gets the actual title text and returns it in lowercase
-    const movieTitle = $(parentEl[0].children[0].children[1].childNodes[0])
-      .text()
-      .toLowerCase();
+    const movieTitle = getMovieTitle("favourites", event);
 
     console.log(movieTitle);
 
@@ -195,6 +253,67 @@ function addTofave() {
           JSON.stringify(favouriteHistory)
         );
       }
+    }
+  });
+}
+
+// function to listen to search on youtube links within movie card
+
+function searchYoutube() {
+  // event listener on watch a trailer link
+  $(".trailer").on("click", function (event) {
+    event.preventDefault();
+
+    console.log("trailer link clicked");
+
+    const movieTitle = getMovieTitle("trailer", event);
+
+    console.log(movieTitle);
+
+    if (movieTitle) {
+      getYouTube(movieTitle, "trailer");
+    }
+  });
+
+  // event listener on watch a review link
+
+  $(".review").on("click", function (event) {
+    event.preventDefault();
+
+    console.log("watch review clicked");
+
+    const movieTitle = getMovieTitle("review", event);
+
+    if (movieTitle) {
+      getYouTube(movieTitle, "review");
+    }
+  });
+
+  // event listener on about the actors link
+
+  $(".actors").on("click", function (event) {
+    event.preventDefault();
+
+    console.log("about the actors link clicked");
+
+    const movieTitle = getMovieTitle("actors", event);
+
+    if (movieTitle) {
+      getYouTube(movieTitle, "actors");
+    }
+  });
+
+  // event listener on movie soundtracks link
+
+  $(".soundtracks").on("click", function (event) {
+    event.preventDefault();
+
+    console.log("soundtrack link clicked");
+
+    const movieTitle = getMovieTitle("soundtracks", event);
+
+    if (movieTitle) {
+      getYouTube(movieTitle, "soundtracks");
     }
   });
 }
