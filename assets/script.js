@@ -1,9 +1,13 @@
 const OMDBapiKey = "1cd5aea2";
 
-// global variables to store the movie search history to local storage
+// global variables to store the movie search history and favourites history to local storage
 
 const movieHistory = window.localStorage.getItem("searchHistory")
   ? JSON.parse(window.localStorage.getItem("searchHistory"))
+  : [];
+
+const favouriteHistory = window.localStorage.getItem("favouriteHistory")
+  ? JSON.parse(window.localStorage.getItem("favouriteHistory"))
   : [];
 
 // stores the string value from the form input
@@ -54,7 +58,7 @@ function getMovieInfo(movie) {
       movieHistory.push(movieObject);
 
       // if there is more than five objects in the array then one will be removed
-      if (movieHistory.length > 5) {
+      if (movieHistory.length > 6) {
         movieHistory.shift();
       }
       // once the above array checked with the above conditionals, the array is stringified and stored to local storage
@@ -87,7 +91,7 @@ function renderMovieCards() {
       url: queryURL,
       method: "GET",
     }).then(function (response) {
-      console.log(response);
+      // console.log(response);
 
       // using destructuring to get data properties from response object
 
@@ -127,9 +131,7 @@ function renderMovieCards() {
         </div>
       </div>
       <div class="fave-link">
-        <a href="#" class="add-to-fave btn btn-dark"
-          >add to favourites</a
-        >
+        <a href="#" class="add-to-fave btn btn-dark">add to favourites</a>
       </div>
     </div>
 
@@ -137,9 +139,67 @@ function renderMovieCards() {
     `);
 
       $("#movies").append(movieCard);
+
+      // invoking the function because once movie card is rendered can attach the event listener to add to fave button
+
+      addTofave();
     });
   }
 }
+
+// this function takes in the response object from getMovieInfo and then checks if there is a match within movieHistory object in local storage and will then create a new local storage titled favourites
+
+function addTofave() {
+  // console.log(data);
+
+  // attaching an event listener to the add to favourites button
+
+  $(".add-to-fave").on("click", function (event) {
+    event.preventDefault();
+
+    console.log("add to fave button clicked");
+
+    // returns the target button clicked on
+    const target = $(event.currentTarget);
+
+    // traverses the dom tree upwards to parent element of movie title in movie card
+    const parentEl = $(target.parent().parent());
+    // gets the actual title text and returns it in lowercase
+    const movieTitle = $(parentEl[0].children[0].children[1].childNodes[0])
+      .text()
+      .toLowerCase();
+
+    console.log(movieTitle);
+
+    // looping through the movieHistory array and checking if the title exists and if so, lets save the id movie title and imdb id to favouriteHistory
+
+    for (let i = 0; i < movieHistory.length; i++) {
+      const movies = movieHistory[i];
+
+      console.log(movies);
+
+      const title = movies["name"].includes(movieTitle);
+
+      // if the title exists in the array then create an object from it again and store it local storage as favourites
+
+      if (title) {
+        favouriteHistory.push({
+          name: movies["name"],
+          id: movies["id"],
+        });
+
+        // lets now save this movie to local storage
+
+        window.localStorage.setItem(
+          "favourites",
+          JSON.stringify(favouriteHistory)
+        );
+      }
+    }
+  });
+}
+
+// the api for the youtube api
 
 function getYouTube(movie) {
   console.log(movie);
