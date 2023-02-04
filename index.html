@@ -32,8 +32,8 @@
 
     <!-- Jumbotron start -->
     <div class="jumbotron jumbotron-fluid">
-      <div class="container text-center ">
-        <h2 id="form-heading" class="w-100" >Search for a movie</h2>
+      <div class="container text-center">
+        <h2 id="form-heading" class="w-100">Search for a movie</h2>
         <form id="search-form" class="form w-100 d-flex justify-content-center">
           <div class="form-inline form-group">
             <div class="input-group w-100">
@@ -60,15 +60,15 @@
         </form>
 
         <div class="d-flex align-items-center justify-content-center">
-        <button
-          type="button"
-          id="show-fav-btn"
-          class="btn btn-lg btn-block btn-primary w-25"
-          data-toggle="modal"
-          data-target="#modal-1"
-        >
-          Favourites
-        </button>
+          <button
+            type="button"
+            id="show-fav-btn"
+            class="btn btn-lg btn-block btn-primary w-25"
+            data-toggle="modal"
+            data-target="#modal-1"
+          >
+            Favourites
+          </button>
         </div>
 
         <!-- Favourites modal-->
@@ -94,6 +94,29 @@
           </div>
         </div>
         <!-- Favourites modal end-->
+        <!-- Error modal-->
+        <div id="modal-2" class="modal fade" tabindex="-1" role="dialog">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Nothing in Search Box!</h5>
+              </div>
+              <div class="modal-body">
+                <div id="favourite">Please enter a movie name to continue</div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Error modal end-->
       </div>
     </div>
 
@@ -105,17 +128,66 @@
         <!-- row 1 start -->
         <section class="row bg-info text-white mt-2">
           <div class="col-md-12">
-            <div id="movie-summary">id="movie-summary"</div>
+            <div id="movies" class="row no-gutters">
+              <div class="col-4 col-lg-3 col-xl-2 p-1 movie-column">
+                <div class="align-top">
+                  <img src="" alt="movie poster" class="image-fluid" />
+                  <h2 class="movie-title">title of movie</h2>
+                  <h2 class="release-date">2001</h2>
+                </div>
+
+                <div class="movie-card-summary">
+                  <p class="movie-plot">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                    Adipisci alias modi repudiandae, atque a voluptate maxime
+                    hic officiis autem itaque eligendi dolorum numquam ducimus
+                    veritatis fugit qui quis error quos.
+                  </p>
+                </div>
+                <div class="youtube-links">
+                  <h2 class="header-youtube">search on youtube</h2>
+                  <div class="movie-card-links">
+                    <ul class="movie-card-list">
+                      <li class="movie-list-items">
+                        <a href="#">watch a trailer</a>
+                      </li>
+                      <li class="movie-list-items">
+                        <a href="#">watch a review</a>
+                      </li>
+                      <li class="movie-list-items">
+                        <a href="#">about the actors</a>
+                      </li>
+                      <li class="movie-list-items">
+                        <a href="#">movie soundtracks</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="fave-link">
+                  <a href="#" class="add-to-fave btn btn-dark"
+                    >add to favourites</a
+                  >
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
         <!-- row 2 start -->
         <section class="row bg-secondary text-white mt-2">
           <div class="col-md-12">
-            <div id="you-tube">id="you-tube"
+            <div id="you-tube">
+              id="you-tube"
 
-          <iframe width="800" height="600" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
+              <iframe
+                width="560"
+                height="315"
+                src=""
+                title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+              ></iframe>
             </div>
           </div>
         </section>
