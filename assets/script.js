@@ -2,7 +2,7 @@ const OMDBapiKey = "1cd5aea2";
 
 // global variables to store the movie search history and favourites history to local storage
 
-const movieHistory = window.localStorage.getItem("searchHistory")
+let movieHistory = window.localStorage.getItem("searchHistory")
   ? JSON.parse(window.localStorage.getItem("searchHistory"))
   : [];
 
@@ -36,9 +36,13 @@ $("#search-button").on("click", function (event) {
   }
 });
 
+// need this variable to be global so that it updates before the function is executed
+let countId = 1;
 // function to retrieve data from the omdb api
 
 function getMovieInfo(movie) {
+  // lets created a variable here to store the countId
+
   const queryURL =
     "https://www.omdbapi.com/?t=" + movie + "&apikey=" + OMDBapiKey;
 
@@ -50,16 +54,33 @@ function getMovieInfo(movie) {
 
     // creating an object to store to local storage
     const movieObject = {
+      cardId: countId,
       name: movie,
-      id: response.imdbID,
+      imdbID: response.imdbID,
     };
+
+    console.log(countId);
     // filters the array and checks if there is already a movie in the array before pushing the movie object
     if (movieHistory.filter((e) => e.name === movie).length === 0) {
+      // pushing object to array
       movieHistory.push(movieObject);
 
+      // lets increase the countId by 1
+      if (countId < 6) {
+        countId = countId + 1;
+        console.log(countId);
+      }
+
+      // console.log(movieHistory.splice(0, 1));
       // if there is more than five objects in the array then one will be removed
       if (movieHistory.length > 6) {
         movieHistory.shift();
+
+        for (let i = 0; i < movieHistory.length; i++) {
+          const movies = movieHistory[i];
+          movies["cardId"] = 0;
+          movies["cardId"] = movies["cardId"] + i + 1;
+        }
       }
       // once the above array checked with the above conditionals, the array is stringified and stored to local storage
       window.localStorage.setItem(
@@ -138,7 +159,7 @@ function renderMovieCards() {
 
     `);
 
-      $("#movies").append(movieCard);
+      $(movieCard).appendTo("#movies");
 
       searchYoutube();
 
@@ -253,6 +274,7 @@ function addTofave() {
 
         if (!exists) {
           favouriteHistory.push({
+            cardId: movies["cardId"],
             name: movies["name"],
             id: movies["id"],
           });
