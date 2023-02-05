@@ -236,22 +236,34 @@ function addTofave() {
 
       console.log(movies);
 
+      // this returns a boolean value of true if exists or false if does not
       const title = movies["name"].includes(movieTitle);
 
-      // if the title exists in the array then create an object from it again and store it local storage as favourites
+      // if the title exists in the array then create an object from it again and store it local storage as favourites, however if it already exists in favourites then we don't want to add it to the favourites array again.
+
+      // because favouritesHistory is an array of object, we need to use findIndex to return a boolean which indicates that the title does not exist
 
       if (title) {
-        favouriteHistory.push({
-          name: movies["name"],
-          id: movies["id"],
-        });
+        const exists =
+          favouriteHistory.findIndex(
+            (element) => element.name === movies["name"]
+          ) > -1;
 
-        // lets now save this movie to local storage
+        console.log(exists);
 
-        window.localStorage.setItem(
-          "favourites",
-          JSON.stringify(favouriteHistory)
-        );
+        if (!exists) {
+          favouriteHistory.push({
+            name: movies["name"],
+            id: movies["id"],
+          });
+
+          // now that we have pushed to the array, we can save to local storage
+
+          window.localStorage.setItem(
+            "favourites",
+            JSON.stringify(favouriteHistory)
+          );
+        }
       }
     }
   });
