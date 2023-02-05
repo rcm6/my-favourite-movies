@@ -71,11 +71,11 @@ function getMovieInfo(movie) {
         console.log(countId);
       }
 
-      // console.log(movieHistory.splice(0, 1));
       // if there is more than five objects in the array then one will be removed
       if (movieHistory.length > 6) {
         movieHistory.shift();
 
+        // this loops through the array and reassigns the correct numbers to cardId
         for (let i = 0; i < movieHistory.length; i++) {
           const movies = movieHistory[i];
           movies["cardId"] = 0;
