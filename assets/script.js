@@ -1,30 +1,97 @@
-var apiKey = "1cd5aea2";
-
+var OMDBapiKey = "1cd5aea2";
+var movieHistory = [];
+var movie="";
+renderMovieCards();
 
 $("#search-button").on("click", function(event) {
     event.preventDefault();
-  
-    // This line grabs the input from the textbox
     var movie = $("#search-input").val().trim();
-  
+    if(movie){ 
+      getMovieInfo(movie);
+      //call you tube function passing response.title into parameter
+      getYouTube(movie)
+      $("#search-input").val("");
+    }
+    else{
+      $('#modal-2').modal('show');
+     }
+  });
+   
 
-    var queryURL = "https://www.omdbapi.com/?t=" + movie + "&apikey=" + apiKey;
- 
+
+function getMovieInfo(movie){
+
+  var queryURL = "https://www.omdbapi.com/?t=" + movie + "&apikey=" + OMDBapiKey;
+
+  $.ajax({
+    url: queryURL,
+    method: "GET"
+  }).then(function(response) {
+    console.log(response);
+    var movieObject = {
+      name: movie,
+      id: response.imdbID
+    }
+   
+    if (movieHistory.filter(e => e.name === movie).length === 0){
+      movieHistory.push(movieObject);
+      if(movieHistory.length >5){
+        movieHistory.shift();
+      }
+      localStorage.setItem("searchHistory", JSON.stringify(movieHistory));
+      renderMovieCards();
+    }
+  });
+}
+
+function renderMovieCards(){
+  $('#movie-summary').empty();
+  
+  movieHistory = JSON.parse(localStorage.getItem("searchHistory"))||[];
+  console.log(movieHistory);
+
+  for(var i=0; i<movieHistory.length; i++){
+    var queryURL = "https://www.omdbapi.com/?t=" + movieHistory[i].name + "&apikey=" + OMDBapiKey;
     $.ajax({
       url: queryURL,
       method: "GET"
     }).then(function(response) {
-       console.log(response);
-
-
+      var movieCard = $(`
+      <div class="card" style="width: 18rem;">
+      <img class="card-img-top" src=${response.Poster} alt="Card image cap">
+        <div class="card-body">
+        <h4>${response.Title}</h4>
+          <h5>${response.Year}</h5>
+          <p>${response.Plot}</p>
+          <p>Genre: ${response.Genre}</p>
+          <p>IMDB Rating: ${response.imdbRating}</p>      
+          <a href="#" class="btn btn-dark favourite">Add to Favourites</a>                     
+        </div>
+      </div>
+    `);
+    
+    $('#movie-summary').append(movieCard);
+    
     });
-    $.ajax({
-        url: "https://youtube.googleapis.com/youtube/v3/search?q=" + movie + "&key=AIzaSyDgb40pPDUgfTAJRSL_rNpputm0ksw60N8",
-        method: "GET"
-      }).then(function(response1) {
-          console.log(response1);
+  }
+}
 
-          $('iframe').attr("src", "https://www.youtube.com/embed/" + response1.items[0].id.videoId);
+function getYouTube(movie){
+  console.log(movie)
+  $.ajax({
+    url: "https://youtube.googleapis.com/youtube/v3/search?q="+ movie + " movie 2021&embeddable=true&maxResults=6&key=AIzaSyDgb40pPDUgfTAJRSL_rNpputm0ksw60N8",
+    method: "GET",
+  }).then(function (response1) {
+    console.log(response1);
+    console.log(response1.length);
 
+    $("#you-tube").find("iframe").remove();
+
+    for (i = 0; i < response1.items.length; i++) {
+      console.log("videoID:" + response1.items[i].id.videoId);
+      $("#you-tube").append(
+        `<iframe width="560" height="315" class="col-6" src="https://www.youtube.com/embed/${response1.items[i].id.videoId}" title="YouTube video player"></iframe>`
+      );
+    }
   });
-})
+}
