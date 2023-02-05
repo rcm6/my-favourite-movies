@@ -257,8 +257,6 @@ function addTofave() {
             id: movies["id"],
           });
 
-          // now that we have pushed to the array, we can save to local storage
-
           window.localStorage.setItem(
             "favourites",
             JSON.stringify(favouriteHistory)
