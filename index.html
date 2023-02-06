@@ -28,9 +28,9 @@
     <!-- Navbar start -->
     <nav
       id="nav"
-      class="navbar navbar-expand-lg navbar-dark fixed-top navbar-expand btn-primary text-center"
+      class="navbar navbar-expand-lg navbar-dark navbar-expand text-light text-center"
     >
-      <h1>Project 1 - Movie info and youtube search</h1>
+      <h1>Project 1 - My favourite movies</h1>
     </nav>
     <!-- Navbar end -->
 
@@ -75,52 +75,7 @@
           </button>
         </div>
 
-        <!-- Favourites modal-->
-        <div id="modal-1" class="modal fade" tabindex="-1" role="dialog">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">Favourites</h5>
-              </div>
-              <div class="modal-body">
-                <div id="favourite">id="favourite"</div>
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-dismiss="modal"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Favourites modal end-->
-        <!-- Error modal-->
-        <div id="modal-2" class="modal fade" tabindex="-1" role="dialog">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">Nothing in Search Box!</h5>
-              </div>
-              <div class="modal-body">
-                <div id="favourite">Please enter a movie name to continue</div>
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-dismiss="modal"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Error modal end-->
+        
       </div>
     </div>
 
@@ -130,7 +85,11 @@
     <main>
       <div class="container">
         <!-- row 1 start -->
-        <section class="row bg-info text-white mt-2">
+        <section id="movie-summary" class="row text-white mt-2">
+
+          <img id="poster-background" class="mx-auto d-block" src="assets/images/71u1GTrSQRL._AC_SL1216_.jpg">
+
+          
           <div class="col-md-12">
             <div id="movies" class="row no-gutters">
               <div class="col-4 col-lg-3 col-xl-2 p-1 movie-column">
@@ -181,7 +140,6 @@
         <section class="row bg-secondary text-white mt-2">
           <div class="col-md-12">
             <div id="you-tube">
-              id="you-tube"
 
               <iframe
                 width="560"
@@ -201,9 +159,68 @@
 
     <!-- Footer section start -->
     <section id="footer">
-      <footer class="bg-dark text-center text-white">footer</footer>
+      <footer class="text-center text-white">
+        <!--footer banner start -->
+    <div id="bottom-banner">
+      <div class="bottom-banner-image">
+      </div>
+    </div>
+    <!-- footer banner end -->
+      </footer>
     </section>
     <!-- Footer section end -->
+
+    <!-- MODALS start -->
+
+    <!-- Favourites modal-->
+    <div id="modal-1" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Favourites</h5>
+          </div>
+          <div class="modal-body">
+            <div id="favourite">id="favourite"</div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Favourites modal end-->
+    <!-- Error modal-->
+    <div id="modal-2" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Nothing in Search Box!</h5>
+          </div>
+          <div class="modal-body">
+            <div id="error">Please enter a movie name to continue</div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Error modal end-->
+
+    <!--MODALS end -->
+
 
     <!-- Bootstrap Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

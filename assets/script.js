@@ -174,7 +174,11 @@ function renderMovieCards() {
 
     `);
 
+
       $(movieCard).appendTo("#movies");
+
+      $("#poster-background").remove();// remove movie poster background image from 
+ 
 
       searchYoutube();
 
@@ -336,8 +340,10 @@ function getYouTube(movie) {
     url:
       "https://youtube.googleapis.com/youtube/v3/search?q=" +
       movie +
+
       " movie 2021&embeddable=true&maxResults=6&key=" +
       YOUTUBE_API_KEY,
+
     method: "GET",
   }).then(function (response1) {
     console.log(response1);
@@ -353,3 +359,39 @@ function getYouTube(movie) {
     }
   });
 }
+
+$('#show-fav-btn').on("click", function(event){
+  event.preventDefault();
+  renderFavourites();
+})
+
+
+function renderFavourites(){
+  $('#favourite').empty();
+  var favouriteSaved = JSON.parse(localStorage.getItem("favourites"))||[];
+  
+  for(var i=0; i<favouriteSaved.length; i++){
+
+    var queryURL = "https://www.omdbapi.com/?t=" + favouriteSaved[i].name + "&apikey=" + OMDBapiKey;
+    $.ajax({
+      url: queryURL,
+      method: "GET"
+    }).then(function(response) {
+      //set the id of the card so that the movie title can be extracted on click later on. Put a string to begin the id so that the full name is stored
+      var favouriteCard = $(`
+      <div class="card favourite-card" style="width: 18rem;">
+      <a href=""><img src=${response.Poster} id="fave-${response.Title}"></a>                   
+        </div>
+      </div>
+    `); 
+    $('#favourite').append(favouriteCard);
+    });
+  }
+}
+
+  $('#favourite').on("click", function(event){
+    event.preventDefault();
+    var faveToPlay = event.target.id;
+    faveToPlay= faveToPlay.substring(5); //remove the fave- from the beginning of the string to return just the movie name
+    getYouTube(faveToPlay);
+  })
