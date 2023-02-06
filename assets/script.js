@@ -1,4 +1,11 @@
-const OMDBapiKey = "1cd5aea2";
+/// importing the api keys from config.js
+
+import { OMDB_API_KEY, YOUTUBE_API_KEY } from "./config.js";
+
+// checking if api exists otherwise throw an error to the console
+
+if (!OMDB_API_KEY && !YOUTUBE_API_KEY)
+  throw new Error("No API keys are provided");
 
 // global variables to store the movie search history and favourites history to local storage
 
@@ -46,7 +53,7 @@ function getMovieInfo(movie) {
   let countId = 0;
 
   const queryURL =
-    "https://www.omdbapi.com/?t=" + movie + "&apikey=" + OMDBapiKey;
+    "https://www.omdbapi.com/?t=" + movie + "&apikey=" + OMDB_API_KEY;
 
   $.ajax({
     url: queryURL,
@@ -115,7 +122,7 @@ function renderMovieCards() {
       "https://www.omdbapi.com/?t=" +
       movieHistory[i].name +
       "&apikey=" +
-      OMDBapiKey;
+      OMDB_API_KEY;
     $.ajax({
       url: queryURL,
       method: "GET",
@@ -329,7 +336,8 @@ function getYouTube(movie) {
     url:
       "https://youtube.googleapis.com/youtube/v3/search?q=" +
       movie +
-      " movie 2021&embeddable=true&maxResults=6&key=AIzaSyDgb40pPDUgfTAJRSL_rNpputm0ksw60N8",
+      " movie 2021&embeddable=true&maxResults=6&key=" +
+      YOUTUBE_API_KEY,
     method: "GET",
   }).then(function (response1) {
     console.log(response1);
