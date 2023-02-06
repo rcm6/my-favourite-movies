@@ -65,53 +65,56 @@ function getMovieInfo(movie) {
     method: "GET",
   }).then(function (response) {
     console.log(response);
-    if(!response.imdbId){
-      $("#modal-2").modal("show");
+    if(response.imdbID){
+    
+      // filters the array and checks if there is already a movie in the array before pushing the movie object
+      if (movieHistory.filter((e) => e.name === movie).length === 0) {
+        // creating an object to store to local storage
+        const movieObject = {
+          cardId: countId,
+          name: movie,
+          imdbId: response.imdbID,
+        };
+
+        // pushing object to array
+        movieHistory.push(movieObject);
+
+        if (countId < 6) {
+          for (let i = 0; i < movieHistory.length; i++) {
+            console.log("inside of loop getMovieInfo");
+
+            countId = i + 1;
+
+            const movie = movieHistory[i];
+
+            movie["cardId"] = movie["cardId"] = countId;
+            countId++;
+          }
+        }
+
+        // if there is more than five objects in the array then one will be removed, so causing the next movie to increase to 7 and so on..
+        if (movieHistory.length > 6) {
+          movieHistory.shift();
+
+          // this loops through the array and reassigns the correct numbers to cardId
+          for (let i = 0; i < movieHistory.length; i++) {
+            const movies = movieHistory[i];
+            movies["cardId"] = 0;
+            movies["cardId"] = movies["cardId"] + i + 1;
+          }
+        }
+        // once the above array checked with the above conditionals, the array is stringified and stored to local storage
+        window.localStorage.setItem(
+          "searchHistory",
+          JSON.stringify(movieHistory)
+        );
+
+        // invoking the function again because user searched for a movie and clicked on the search button
+        renderMovieCards();
+      }
     }
-    // filters the array and checks if there is already a movie in the array before pushing the movie object
-    if (movieHistory.filter((e) => e.name === movie).length === 0) {
-      // creating an object to store to local storage
-      const movieObject = {
-        cardId: countId,
-        name: movie,
-        imdbId: response.imdbID,
-      };
-
-      // pushing object to array
-      movieHistory.push(movieObject);
-
-      if (countId < 6) {
-        for (let i = 0; i < movieHistory.length; i++) {
-          console.log("inside of loop getMovieInfo");
-
-          countId = i + 1;
-
-          const movie = movieHistory[i];
-
-          movie["cardId"] = movie["cardId"] = countId;
-          countId++;
-        }
-      }
-
-      // if there is more than five objects in the array then one will be removed, so causing the next movie to increase to 7 and so on..
-      if (movieHistory.length > 6) {
-        movieHistory.shift();
-
-        // this loops through the array and reassigns the correct numbers to cardId
-        for (let i = 0; i < movieHistory.length; i++) {
-          const movies = movieHistory[i];
-          movies["cardId"] = 0;
-          movies["cardId"] = movies["cardId"] + i + 1;
-        }
-      }
-      // once the above array checked with the above conditionals, the array is stringified and stored to local storage
-      window.localStorage.setItem(
-        "searchHistory",
-        JSON.stringify(movieHistory)
-      );
-
-      // invoking the function again because user searched for a movie and clicked on the search button
-      renderMovieCards();
+      else{
+      $("#modal-2").modal("show");
     }
   });
 }
