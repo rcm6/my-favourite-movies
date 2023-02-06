@@ -56,7 +56,7 @@ function getMovieInfo(movie) {
     const movieObject = {
       cardId: countId,
       name: movie,
-      imdbID: response.imdbID,
+      imdbId: response.imdbID,
     };
 
     console.log(countId);
@@ -137,22 +137,22 @@ function renderMovieCards() {
         <div class="movie-card-links">
           <ul class="movie-card-list">
             <li class="movie-list-items">
-              <a href="#" class="trailer">watch a trailer</a>
+              <a href="#" class="trailer" data-cardid="${movieHistory[i].cardId}">watch a trailer</a>
             </li>
             <li class="movie-list-items">
-              <a href="#" class="review">watch a review</a>
+              <a href="#" class="review" data-cardid="${movieHistory[i].cardId}">watch a review</a>
             </li>
             <li class="movie-list-items">
-              <a href="#" class="actors">about the actors</a>
+              <a href="#" class="actors" data-cardid="${movieHistory[i].cardId}">about the actors</a>
             </li>
             <li class="movie-list-items">
-              <a href="#" class="soundtracks">movie soundtracks</a>
+              <a href="#" class="soundtracks" data-cardid="${movieHistory[i].cardId}">movie soundtracks</a>
             </li>
           </ul>
         </div>
       </div>
       <div class="fave-link">
-        <a href="#" class="add-to-fave btn btn-dark">add to favourites</a>
+        <a href="#" class="add-to-fave btn btn-dark" data-cardid="${movieHistory[i].cardId}">add to favourites</a>
       </div>
     </div>
 
@@ -174,63 +174,20 @@ function renderMovieCards() {
 
 // creating a helper function to return the movie title
 
-function getMovieTitle(link, clickEvent) {
-  if (link === "favourites") {
-    const target = $(clickEvent.currentTarget);
+function getMovieTitle(clickEvent) {
+  const target = $(clickEvent.currentTarget);
 
-    const parentEl = $(target.parent().parent());
+  // had to use Element.attr() instead of dataset because of jquery and convert it to number
+  const targetId = +target.attr("data-cardid");
 
-    const title = $(parentEl[0].children[0].children[1].childNodes[0])
-      .text()
-      .toLowerCase();
+  console.log(targetId);
 
-    return title;
-  }
+  const movieObj = movieHistory.filter(
+    (element) => element.cardId === targetId
+  );
 
-  if (link === "trailer") {
-    const target = $(clickEvent.currentTarget);
-
-    const parentEl = $(target.parent().parent().parent().parent().parent());
-
-    const title = $(parentEl[0].children[0].children[1].childNodes[0])
-      .text()
-      .toLowerCase();
-
-    return title;
-  }
-
-  if (link === "review") {
-    const target = $(clickEvent.currentTarget);
-
-    const parentEl = $(target.parent().parent().parent().parent().parent());
-
-    const title = $(parentEl[0].children[0].children[1].childNodes[0])
-      .text()
-      .toLowerCase();
-
-    return title;
-  }
-
-  if (link === "actors") {
-    const target = $(clickEvent.currentTarget);
-
-    const parentEl = $(target.parent().parent().parent().parent().parent());
-
-    const title = $(parentEl[0].children[0].children[1].childNodes[0])
-      .text()
-      .toLowerCase();
-
-    return title;
-  }
-
-  if (link === "soundtracks") {
-    const target = $(clickEvent.currentTarget);
-
-    const parentEl = $(target.parent().parent().parent().parent().parent());
-
-    const title = $(parentEl[0].children[0].children[1].childNodes[0])
-      .text()
-      .toLowerCase();
+  if (targetId === movieObj[0].cardId) {
+    const title = movieObj[0].name;
 
     return title;
   }
@@ -246,7 +203,7 @@ function addTofave() {
 
     console.log("add to fave button clicked");
 
-    const movieTitle = getMovieTitle("favourites", event);
+    const movieTitle = getMovieTitle(event);
 
     console.log(movieTitle);
 
@@ -276,7 +233,7 @@ function addTofave() {
           favouriteHistory.push({
             cardId: movies["cardId"],
             name: movies["name"],
-            id: movies["id"],
+            imdbId: movies["imdbId"],
           });
 
           window.localStorage.setItem(
@@ -298,7 +255,7 @@ function searchYoutube() {
 
     console.log("trailer link clicked");
 
-    const movieTitle = getMovieTitle("trailer", event);
+    const movieTitle = getMovieTitle(event);
 
     console.log(movieTitle);
 
@@ -314,7 +271,9 @@ function searchYoutube() {
 
     console.log("watch review clicked");
 
-    const movieTitle = getMovieTitle("review", event);
+    const movieTitle = getMovieTitle(event);
+
+    console.log(movieTitle);
 
     if (movieTitle) {
       getYouTube(movieTitle, "review");
@@ -328,7 +287,9 @@ function searchYoutube() {
 
     console.log("about the actors link clicked");
 
-    const movieTitle = getMovieTitle("actors", event);
+    const movieTitle = getMovieTitle(event);
+
+    console.log(movieTitle);
 
     if (movieTitle) {
       getYouTube(movieTitle, "actors");
@@ -342,7 +303,9 @@ function searchYoutube() {
 
     console.log("soundtrack link clicked");
 
-    const movieTitle = getMovieTitle("soundtracks", event);
+    const movieTitle = getMovieTitle(event);
+
+    console.log(movieTitle);
 
     if (movieTitle) {
       getYouTube(movieTitle, "soundtracks");
