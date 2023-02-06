@@ -63,7 +63,7 @@ function getMovieInfo(movie) {
     method: "GET",
   }).then(function (response) {
     console.log(response);
-
+    
     // filters the array and checks if there is already a movie in the array before pushing the movie object
     if (movieHistory.filter((e) => e.name === movie).length === 0) {
       // creating an object to store to local storage
@@ -375,7 +375,7 @@ function renderFavourites(){
   
   for(var i=0; i<favouriteSaved.length; i++){
 
-    var queryURL = "https://www.omdbapi.com/?t=" + favouriteSaved[i].name + "&apikey=" + OMDBapiKey;
+    var queryURL = "https://www.omdbapi.com/?t=" + favouriteSaved[i].name + "&apikey=" + OMDB_API_KEY;
     $.ajax({
       url: queryURL,
       method: "GET"
