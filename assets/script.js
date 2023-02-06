@@ -1,4 +1,11 @@
-const OMDBapiKey = "1cd5aea2";
+/// importing the api keys from config.js
+
+import { OMDB_API_KEY, YOUTUBE_API_KEY } from "./config.js";
+
+// checking if api exists otherwise throw an error to the console
+
+if (!OMDB_API_KEY && !YOUTUBE_API_KEY)
+  throw new Error("No API keys are provided");
 
 // global variables to store the movie search history and favourites history to local storage
 
@@ -37,14 +44,16 @@ $("#search-button").on("click", function (event) {
 });
 
 // need this variable to be global so that it updates before the function is executed
-let countId = 1;
+// let countId = 1;
 // function to retrieve data from the omdb api
 
 function getMovieInfo(movie) {
-  // lets created a variable here to store the countId
+  // lets created a variable here to initialise the countId
+
+  let countId = 0;
 
   const queryURL =
-    "https://www.omdbapi.com/?t=" + movie + "&apikey=" + OMDBapiKey;
+    "https://www.omdbapi.com/?t=" + movie + "&apikey=" + OMDB_API_KEY;
 
   $.ajax({
     url: queryURL,
@@ -52,26 +61,32 @@ function getMovieInfo(movie) {
   }).then(function (response) {
     console.log(response);
 
-    // creating an object to store to local storage
-    const movieObject = {
-      cardId: countId,
-      name: movie,
-      imdbId: response.imdbID,
-    };
-
-    console.log(countId);
     // filters the array and checks if there is already a movie in the array before pushing the movie object
     if (movieHistory.filter((e) => e.name === movie).length === 0) {
+      // creating an object to store to local storage
+      const movieObject = {
+        cardId: countId,
+        name: movie,
+        imdbId: response.imdbID,
+      };
+
       // pushing object to array
       movieHistory.push(movieObject);
 
-      // lets increase the countId by 1
       if (countId < 6) {
-        countId = countId + 1;
-        console.log(countId);
+        for (let i = 0; i < movieHistory.length; i++) {
+          console.log("inside of loop getMovieInfo");
+
+          countId = i + 1;
+
+          const movie = movieHistory[i];
+
+          movie["cardId"] = movie["cardId"] = countId;
+          countId++;
+        }
       }
 
-      // if there is more than five objects in the array then one will be removed
+      // if there is more than five objects in the array then one will be removed, so causing the next movie to increase to 7 and so on..
       if (movieHistory.length > 6) {
         movieHistory.shift();
 
@@ -107,7 +122,7 @@ function renderMovieCards() {
       "https://www.omdbapi.com/?t=" +
       movieHistory[i].name +
       "&apikey=" +
-      OMDBapiKey;
+      OMDB_API_KEY;
     $.ajax({
       url: queryURL,
       method: "GET",
@@ -325,7 +340,10 @@ function getYouTube(movie) {
     url:
       "https://youtube.googleapis.com/youtube/v3/search?q=" +
       movie +
-      "&embeddable=true&maxResults=6&key=AIzaSyDgb40pPDUgfTAJRSL_rNpputm0ksw60N8",
+
+      " movie 2021&embeddable=true&maxResults=6&key=" +
+      YOUTUBE_API_KEY,
+
     method: "GET",
   }).then(function (response1) {
     console.log(response1);
