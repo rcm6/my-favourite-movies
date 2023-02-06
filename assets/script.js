@@ -380,7 +380,12 @@ $('#show-fav-btn').on("click", function(event){
 function renderFavourites(){
   $('#favourite').empty();
   var favouriteSaved = JSON.parse(localStorage.getItem("favourites"))||[];
-  
+
+  if(favouriteSaved.length ===0){
+    var noFaves = $('<h1>No favourites saved</h1>');
+    $('#favourite').append(noFaves);
+  }
+
   for(var i=0; i<favouriteSaved.length; i++){
 
     var queryURL = "https://www.omdbapi.com/?t=" + favouriteSaved[i].name + "&apikey=" + OMDB_API_KEY;
@@ -401,7 +406,7 @@ function renderFavourites(){
 
   $('#favourite').on("click", function(event){
     event.preventDefault();
-    $('#modal-1').modal("hide");
+    //$('#modal-1').modal("hide");
     var faveToPlay = event.target.id;
     faveToPlay= faveToPlay.substring(5); //remove the fave- from the beginning of the string to return just the movie name
     renderMainCard(faveToPlay);
