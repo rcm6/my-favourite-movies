@@ -1,11 +1,14 @@
 /// importing the api keys from config.js
 
-import { OMDB_API_KEY, YOUTUBE_API_KEY } from "./config.js";
+// import { OMDB_API_KEY, YOUTUBE_API_KEY } from "./config.js";
 
-// checking if api exists otherwise throw an error to the console
+// // checking if api exists otherwise throw an error to the console
 
-if (!OMDB_API_KEY && !YOUTUBE_API_KEY)
-  throw new Error("No API keys are provided");
+// if (!OMDB_API_KEY && !YOUTUBE_API_KEY)
+//   throw new Error("No API keys are provided");
+
+const OMDB_API_KEY = "1cd5aea2";
+const YOUTUBE_API_KEY = "AIzaSyDgb40pPDUgfTAJRSL_rNpputm0ksw60N8";
 
 // global variables to store the movie search history and favourites history to local storage
 
