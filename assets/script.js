@@ -1,4 +1,4 @@
-/// importing the api keys from config.js
+/*/// importing the api keys from config.js
 
 // import { OMDB_API_KEY, YOUTUBE_API_KEY } from "./config.js";
 
@@ -7,8 +7,10 @@
 // if (!OMDB_API_KEY && !YOUTUBE_API_KEY)
 //   throw new Error("No API keys are provided");
 
-const OMDB_API_KEY = "1cd5aea2";
-const YOUTUBE_API_KEY = "AIzaSyDgb40pPDUgfTAJRSL_rNpputm0ksw60N8";
+if (!OMDB_API_KEY && !YOUTUBE_API_KEY)
+  throw new Error("No API keys are provided");*/
+OMDB_API_KEY = "1cd5aea2";
+YOUTUBE_API_KEY = "AIzaSyDgb40pPDUgfTAJRSL_rNpputm0ksw60N8";
 
 // global variables to store the movie search history and favourites history to local storage
 
@@ -63,7 +65,9 @@ function getMovieInfo(movie) {
     method: "GET",
   }).then(function (response) {
     console.log(response);
-    
+    if(!response.imdbId){
+      $("#modal-2").modal("show");
+    }
     // filters the array and checks if there is already a movie in the array before pushing the movie object
     if (movieHistory.filter((e) => e.name === movie).length === 0) {
       // creating an object to store to local storage
