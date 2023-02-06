@@ -137,7 +137,7 @@ function renderMovieCards() {
 
 
     `);
-
+      $("#poster-background").remove();// remove movie poster background image from 
       $("#movies").append(movieCard);
 
       searchYoutube();
@@ -326,7 +326,7 @@ function getYouTube(movie) {
     url:
       "https://youtube.googleapis.com/youtube/v3/search?q=" +
       movie +
-      " movie 2021&embeddable=true&maxResults=6&key=AIzaSyDgb40pPDUgfTAJRSL_rNpputm0ksw60N8",
+      "&embeddable=true&maxResults=6&key=AIzaSyDgb40pPDUgfTAJRSL_rNpputm0ksw60N8",
     method: "GET",
   }).then(function (response1) {
     console.log(response1);
