@@ -1,11 +1,13 @@
-/// importing the api keys from config.js
+/*/// importing the api keys from config.js
 
 import { OMDB_API_KEY, YOUTUBE_API_KEY } from "./config.js";
 
 // checking if api exists otherwise throw an error to the console
 
 if (!OMDB_API_KEY && !YOUTUBE_API_KEY)
-  throw new Error("No API keys are provided");
+  throw new Error("No API keys are provided");*/
+OMDB_API_KEY = "1cd5aea2";
+YOUTUBE_API_KEY = "AIzaSyDgb40pPDUgfTAJRSL_rNpputm0ksw60N8";
 
 // global variables to store the movie search history and favourites history to local storage
 
@@ -372,7 +374,7 @@ function renderFavourites(){
   
   for(var i=0; i<favouriteSaved.length; i++){
 
-    var queryURL = "https://www.omdbapi.com/?t=" + favouriteSaved[i].name + "&apikey=" + OMDBapiKey;
+    var queryURL = "https://www.omdbapi.com/?t=" + favouriteSaved[i].name + "&apikey=" + OMDB_API_KEY;
     $.ajax({
       url: queryURL,
       method: "GET"
