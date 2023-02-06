@@ -40,6 +40,7 @@ $("#search-button").on("click", function (event) {
   // checks if movie string exists and then invokes functions
   if (movie) {
     getMovieInfo(movie);
+    renderMainCard(movie);
     //call you tube function passing response.title into parameter
     getYouTube(movie);
     $("#search-input").val("");
@@ -389,9 +390,8 @@ function renderFavourites(){
     }).then(function(response) {
       //set the id of the card so that the movie title can be extracted on click later on. Put a string to begin the id so that the full name is stored
       var favouriteCard = $(`
-      <div class="card favourite-card" style="width: 18rem;">
+      <div class="card favourite-card">
       <a href=""><img src=${response.Poster} id="fave-${response.Title}"></a>                   
-        </div>
       </div>
     `); 
     $('#favourite').append(favouriteCard);
@@ -401,7 +401,63 @@ function renderFavourites(){
 
   $('#favourite').on("click", function(event){
     event.preventDefault();
+    $('#modal-1').modal("hide");
     var faveToPlay = event.target.id;
     faveToPlay= faveToPlay.substring(5); //remove the fave- from the beginning of the string to return just the movie name
+    renderMainCard(faveToPlay);
     getYouTube(faveToPlay);
   })
+
+  function renderMainCard(movie) {
+    $('#main-card').empty();
+    const queryURL =
+      "https://www.omdbapi.com/?t=" +
+      movie +
+      "&apikey=" +
+      OMDB_API_KEY;
+    $.ajax({
+      url: queryURL,
+      method: "GET",
+    }).then(function (response) {
+    
+
+      var movieCard = $(`
+      <div class="card" style="width: 100%;">
+      
+        <img src="${response.Poster}" alt="movie poster" class="poster-main"/>
+        <h2 class="movie-title">${response.Title}</h2>
+        <h2 class="release-date">${response.Year}</h2>
+     
+
+      <div class="movie-card-summary">
+        <p class="movie-plot">
+              ${response.Plot}
+        </p>
+      </div>
+      <div class="youtube-links">
+      <h2 class="header-youtube">search on youtube</h2>
+      <div class="movie-card-links">
+        <ul class="movie-card-list">
+          <li class="movie-list-items">
+            <a href="#" class="trailer" data-searchVid="${response.Title}+'trailer'">watch a trailer</a>
+          </li>
+          <li class="movie-list-items">
+            <a href="#" class="review" data-searchVid="${response.Title}+'review'">watch a review</a>
+          </li>
+          <li class="movie-list-items">
+            <a href="#" class="actors" data-searchVid="${response.Title}+'actors'">about the actors</a>
+          </li>
+          <li class="movie-list-items">
+            <a href="#" class="soundtracks" data-searchVid="${response.Title}+'soundtrack'">movie soundtracks</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+    `);
+    $('#main-card').append(movieCard);
+    $("#modal-3").modal("show");
+    });
+  }
+
