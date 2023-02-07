@@ -236,25 +236,25 @@ function addTofave() {
     //getMovieTitle(event);
 
     //console.log(movieTitle);
-
+    var currentFavouriteList = JSON.parse(localStorage.getItem("favourites"));
     // looping through the movieHistory array and checking if the title exists and if so, lets save the id movie title and imdb id to favouriteHistory
-    if(favouriteHistory.length === 0){
+    if(currentFavouriteList.length === 0){
       console.log("empty");
       const movieObject = {
         name: movieTitle,
         imdbId: imdbID
       };
 
-      favouriteHistory.push(movieObject);
+      currentFavouriteList.push(movieObject);
 
       window.localStorage.setItem(
         "favourites",
-        JSON.stringify(favouriteHistory)
+        JSON.stringify(currentFavouriteList)
       );
     }
     
-    for (let i = 0; i < favouriteHistory.length; i++) {
-      const movies = favouriteHistory[i];
+    for (let i = 0; i < currentFavouriteList.length; i++) {
+      const movies = currentFavouriteList[i];
 
       console.log("not empty");
 
@@ -264,7 +264,7 @@ function addTofave() {
       // if the title exists in the array then create an object from it again and store it local storage as favourites, however if it already exists in favourites then we don't want to add it to the favourites array again.
 
       // because favouritesHistory is an array of object, we need to use findIndex to return a boolean which indicates that the title does not exist
-      if (favouriteHistory.filter((e) => e.name === movieTitle).length === 0) {
+      if (currentFavouriteList.filter((e) => e.name === movieTitle).length === 0) {
         // creating an object to store to local storage
         
         const movieObject = {
@@ -272,7 +272,7 @@ function addTofave() {
           imdbId: imdbID
         };
   
-        favouriteHistory.push(movieObject);
+        currentFavouriteList.push(movieObject);
 
       
 
@@ -292,7 +292,7 @@ function addTofave() {
 
           window.localStorage.setItem(
             "favourites",
-            JSON.stringify(favouriteHistory)
+            JSON.stringify(currentFavouriteList)
           );
         //}
      // }
@@ -332,7 +332,9 @@ function searchYoutube() {
     console.log("watch review clicked");
 
     //const movieTitle = getMovieTitle(event);
-    movie = getMovieTitle(event);
+    movie = event.target.id;
+    //getMovieTitle(event);
+    movie = movie.substring(2);
     extra = "review";
 
     console.log(movie);
@@ -350,7 +352,9 @@ function searchYoutube() {
     console.log("about the actors link clicked");
 
     //const movieTitle = getMovieTitle(event);
-    movie = getMovieTitle(event);
+    movie = event.target.id;
+    //getMovieTitle(event);
+    movie = movie.substring(2);
     extra = "actors";
 
     console.log(movie);
@@ -368,7 +372,9 @@ function searchYoutube() {
     console.log("soundtrack link clicked");
 
     //const movieTitle = getMovieTitle(event);
-    movie = getMovieTitle(event);
+    movie = event.target.id;
+    //getMovieTitle(event);
+    movie = movie.substring(2);
     extra = "soundtracks";
 
     console.log(movie);
