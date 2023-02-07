@@ -1,4 +1,16 @@
-const OMDBapiKey = "1cd5aea2";
+/*/// importing the api keys from config.js
+
+// import { OMDB_API_KEY, YOUTUBE_API_KEY } from "./config.js";
+
+// // checking if api exists otherwise throw an error to the console
+
+// if (!OMDB_API_KEY && !YOUTUBE_API_KEY)
+//   throw new Error("No API keys are provided");
+
+if (!OMDB_API_KEY && !YOUTUBE_API_KEY)
+  throw new Error("No API keys are provided");*/
+OMDB_API_KEY = "1cd5aea2";
+YOUTUBE_API_KEY = "AIzaSyDgb40pPDUgfTAJRSL_rNpputm0ksw60N8";
 
 // global variables to store the movie search history and favourites history to local storage
 
@@ -12,7 +24,7 @@ const favouriteHistory = window.localStorage.getItem("favouriteHistory")
 
 // stores the string value from the form input
 
-const movie = "";
+var movie = "";
 
 // invoking the function here first so that: if there are any movies stored within local storage, will be rendered first
 
@@ -28,6 +40,7 @@ $("#search-button").on("click", function (event) {
   // checks if movie string exists and then invokes functions
   if (movie) {
     getMovieInfo(movie);
+    renderMainCard(movie);
     //call you tube function passing response.title into parameter
     getYouTube(movie);
     $("#search-input").val("");
@@ -46,58 +59,63 @@ function getMovieInfo(movie) {
   let countId = 0;
 
   const queryURL =
-    "https://www.omdbapi.com/?t=" + movie + "&apikey=" + OMDBapiKey;
+    "https://www.omdbapi.com/?t=" + movie + "&apikey=" + OMDB_API_KEY;
 
   $.ajax({
     url: queryURL,
     method: "GET",
   }).then(function (response) {
     console.log(response);
+    if(response.imdbID){
+    
+      // filters the array and checks if there is already a movie in the array before pushing the movie object
+      if (movieHistory.filter((e) => e.name === movie).length === 0) {
+        // creating an object to store to local storage
+        const movieObject = {
+          cardId: countId,
+          name: movie,
+          imdbId: response.imdbID,
+        };
 
-    // filters the array and checks if there is already a movie in the array before pushing the movie object
-    if (movieHistory.filter((e) => e.name === movie).length === 0) {
-      // creating an object to store to local storage
-      const movieObject = {
-        cardId: countId,
-        name: movie,
-        imdbId: response.imdbID,
-      };
+        // pushing object to array
+        movieHistory.push(movieObject);
 
-      // pushing object to array
-      movieHistory.push(movieObject);
+        if (countId < 6) {
+          for (let i = 0; i < movieHistory.length; i++) {
+            console.log("inside of loop getMovieInfo");
 
-      if (countId < 6) {
-        for (let i = 0; i < movieHistory.length; i++) {
-          console.log("inside of loop getMovieInfo");
+            countId = i + 1;
 
-          countId = i + 1;
+            const movie = movieHistory[i];
 
-          const movie = movieHistory[i];
-
-          movie["cardId"] = movie["cardId"] = countId;
-          countId++;
+            movie["cardId"] = movie["cardId"] = countId;
+            countId++;
+          }
         }
-      }
 
-      // if there is more than five objects in the array then one will be removed, so causing the next movie to increase to 7 and so on..
-      if (movieHistory.length > 6) {
-        movieHistory.shift();
+        // if there is more than five objects in the array then one will be removed, so causing the next movie to increase to 7 and so on..
+        if (movieHistory.length > 6) {
+          movieHistory.shift();
 
-        // this loops through the array and reassigns the correct numbers to cardId
-        for (let i = 0; i < movieHistory.length; i++) {
-          const movies = movieHistory[i];
-          movies["cardId"] = 0;
-          movies["cardId"] = movies["cardId"] + i + 1;
+          // this loops through the array and reassigns the correct numbers to cardId
+          for (let i = 0; i < movieHistory.length; i++) {
+            const movies = movieHistory[i];
+            movies["cardId"] = 0;
+            movies["cardId"] = movies["cardId"] + i + 1;
+          }
         }
-      }
-      // once the above array checked with the above conditionals, the array is stringified and stored to local storage
-      window.localStorage.setItem(
-        "searchHistory",
-        JSON.stringify(movieHistory)
-      );
+        // once the above array checked with the above conditionals, the array is stringified and stored to local storage
+        window.localStorage.setItem(
+          "searchHistory",
+          JSON.stringify(movieHistory)
+        );
 
-      // invoking the function again because user searched for a movie and clicked on the search button
-      renderMovieCards();
+        // invoking the function again because user searched for a movie and clicked on the search button
+        renderMovieCards();
+      }
+    }
+      else{
+      $("#modal-2").modal("show");
     }
   });
 }
@@ -115,7 +133,7 @@ function renderMovieCards() {
       "https://www.omdbapi.com/?t=" +
       movieHistory[i].name +
       "&apikey=" +
-      OMDBapiKey;
+      OMDB_API_KEY;
     $.ajax({
       url: queryURL,
       method: "GET",
@@ -167,7 +185,11 @@ function renderMovieCards() {
 
     `);
 
+
       $(movieCard).appendTo("#movies");
+
+      $("#poster-background").remove();// remove movie poster background image from 
+ 
 
       searchYoutube();
 
@@ -263,12 +285,14 @@ function searchYoutube() {
 
     console.log("trailer link clicked");
 
-    const movieTitle = getMovieTitle(event);
+    //const movieTitle = getMovieTitle(event);
+    movie = getMovieTitle(event);
+    extra = "trailer";
 
-    console.log(movieTitle);
+    console.log(movie);
 
-    if (movieTitle) {
-      getYouTube(movieTitle, "trailer");
+    if (movie) {
+      getYouTube(movie, extra);
     }
   });
 
@@ -279,12 +303,14 @@ function searchYoutube() {
 
     console.log("watch review clicked");
 
-    const movieTitle = getMovieTitle(event);
+    //const movieTitle = getMovieTitle(event);
+    movie = getMovieTitle(event);
+    extra = "review";
 
-    console.log(movieTitle);
+    console.log(movie);
 
-    if (movieTitle) {
-      getYouTube(movieTitle, "review");
+    if (movie) {
+      getYouTube(movieTitle, extra);
     }
   });
 
@@ -295,12 +321,14 @@ function searchYoutube() {
 
     console.log("about the actors link clicked");
 
-    const movieTitle = getMovieTitle(event);
+    //const movieTitle = getMovieTitle(event);
+    movie = getMovieTitle(event);
+    extra = "actors";
 
-    console.log(movieTitle);
+    console.log(movie);
 
-    if (movieTitle) {
-      getYouTube(movieTitle, "actors");
+    if (movie) {
+      getYouTube(movie, extra);
     }
   });
 
@@ -311,25 +339,30 @@ function searchYoutube() {
 
     console.log("soundtrack link clicked");
 
-    const movieTitle = getMovieTitle(event);
+    //const movieTitle = getMovieTitle(event);
+    movie = getMovieTitle(event);
+    extra = "soundtracks";
 
-    console.log(movieTitle);
+    console.log(movie);
 
-    if (movieTitle) {
-      getYouTube(movieTitle, "soundtracks");
+    if (movie) {
+      getYouTube(movie, extra);
     }
   });
 }
 
 // the api for the youtube api
 
-function getYouTube(movie) {
-  console.log(movie);
+function getYouTube(movie, extra) {
+  console.log(movie, extra);
   $.ajax({
     url:
       "https://youtube.googleapis.com/youtube/v3/search?q=" +
-      movie +
-      " movie 2021&embeddable=true&maxResults=6&key=AIzaSyDgb40pPDUgfTAJRSL_rNpputm0ksw60N8",
+      movie + "+movie+"+ extra +
+
+      "&embeddable=true&maxResults=6&key=" +
+      YOUTUBE_API_KEY,
+
     method: "GET",
   }).then(function (response1) {
     console.log(response1);
@@ -345,3 +378,99 @@ function getYouTube(movie) {
     }
   });
 }
+
+$('#show-fav-btn').on("click", function(event){
+  event.preventDefault();
+  renderFavourites();
+})
+
+
+function renderFavourites(){
+  $('#favourite').empty();
+  var favouriteSaved = JSON.parse(localStorage.getItem("favourites"))||[];
+
+  if(favouriteSaved.length ===0){
+    var noFaves = $('<h1>No favourites saved</h1>');
+    $('#favourite').append(noFaves);
+  }
+
+  for(var i=0; i<favouriteSaved.length; i++){
+
+    var queryURL = "https://www.omdbapi.com/?t=" + favouriteSaved[i].name + "&apikey=" + OMDB_API_KEY;
+    $.ajax({
+      url: queryURL,
+      method: "GET"
+    }).then(function(response) {
+      //set the id of the card so that the movie title can be extracted on click later on. Put a string to begin the id so that the full name is stored
+      var favouriteCard = $(`
+      <div class="card favourite-card">
+      <a href=""><img src=${response.Poster} id="fave-${response.Title}"></a>                   
+      </div>
+    `); 
+    $('#favourite').append(favouriteCard);
+    });
+  }
+}
+
+  $('#favourite').on("click", function(event){
+    event.preventDefault();
+    //$('#modal-1').modal("hide");
+    var faveToPlay = event.target.id;
+    faveToPlay= faveToPlay.substring(5); //remove the fave- from the beginning of the string to return just the movie name
+    renderMainCard(faveToPlay);
+    getYouTube(faveToPlay);
+  })
+
+  function renderMainCard(movie) {
+    $('#main-card').empty();
+    const queryURL =
+      "https://www.omdbapi.com/?t=" +
+      movie +
+      "&apikey=" +
+      OMDB_API_KEY;
+    $.ajax({
+      url: queryURL,
+      method: "GET",
+    }).then(function (response) {
+    
+
+      var movieCard = $(`
+      <div class="card" style="width: 100%;">
+      
+        <img src="${response.Poster}" alt="movie poster" class="poster-main"/>
+        <h2 class="movie-title">${response.Title}</h2>
+        <h2 class="release-date">${response.Year}</h2>
+     
+
+      <div class="movie-card-summary">
+        <p class="movie-plot">
+              ${response.Plot}
+        </p>
+      </div>
+      <div class="youtube-links">
+      <h2 class="header-youtube">search on youtube</h2>
+      <div class="movie-card-links">
+        <ul class="movie-card-list">
+          <li class="movie-list-items">
+            <a href="#" class="trailer" data-searchVid="${response.Title}+'trailer'">watch a trailer</a>
+          </li>
+          <li class="movie-list-items">
+            <a href="#" class="review" data-searchVid="${response.Title}+'review'">watch a review</a>
+          </li>
+          <li class="movie-list-items">
+            <a href="#" class="actors" data-searchVid="${response.Title}+'actors'">about the actors</a>
+          </li>
+          <li class="movie-list-items">
+            <a href="#" class="soundtracks" data-searchVid="${response.Title}+'soundtrack'">movie soundtracks</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+    `);
+    $('#main-card').append(movieCard);
+    $("#modal-3").modal("show");
+    });
+  }
+
