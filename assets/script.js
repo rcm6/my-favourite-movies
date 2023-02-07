@@ -10,7 +10,7 @@
 if (!OMDB_API_KEY && !YOUTUBE_API_KEY)
   throw new Error("No API keys are provided");*/
 OMDB_API_KEY = "1cd5aea2";
-YOUTUBE_API_KEY = "AIzaSyDgb40pPDUgfTAJRSL_rNpputm0ksw60N8";
+YOUTUBE_API_KEY = "AIzaSyCQ5A0D8pEufOYOhAjZS988NVbxvuRdasc";
 
 // global variables to store the movie search history and favourites history to local storage
 
@@ -116,6 +116,7 @@ function getMovieInfo(movie) {
     }
       else{
       $("#modal-2").modal("show");
+      
     }
   });
 }
@@ -414,6 +415,8 @@ function renderFavourites(){
   })
 
   function renderMainCard(movie) {
+    
+
     $('#main-card').empty();
     const queryURL =
       "https://www.omdbapi.com/?t=" +
@@ -425,7 +428,11 @@ function renderFavourites(){
       method: "GET",
     }).then(function (response) {
     
-
+      var isValidMovie = response.imdbID;
+      if(!isValidMovie){
+        return;
+      }
+      
       var movieCard = $(`
       <div class="card" style="width: 100%;">
       
@@ -465,4 +472,6 @@ function renderFavourites(){
     $("#modal-3").modal("show");
     });
   }
+ 
+  
 
