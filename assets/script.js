@@ -18,7 +18,7 @@ let movieHistory = window.localStorage.getItem("searchHistory")
   ? JSON.parse(window.localStorage.getItem("searchHistory"))
   : [];
 
-const favouriteHistory = window.localStorage.getItem("favouriteHistory")
+let favouriteHistory = window.localStorage.getItem("favouriteHistory")
   ? JSON.parse(window.localStorage.getItem("favouriteHistory"))
   : [];
 
@@ -143,7 +143,7 @@ function renderMovieCards() {
 
       // using destructuring to get data properties from response object
 
-      const { Poster, Title, Year, Plot } = response;
+      const { Poster, Title, Year, Plot, imdbID } = response;
 
       var movieCard = $(`
       
@@ -164,35 +164,31 @@ function renderMovieCards() {
         <div class="movie-card-links">
           <ul class="movie-card-list">
             <li class="movie-list-items">
-              <a href="#" class="trailer" data-cardid="${movieHistory[i].cardId}">watch a trailer</a>
+              <a href="#" class="trailer" id="d+${Title}" data-imdb="${imdbID}">watch a trailer</a>
             </li>
             <li class="movie-list-items">
-              <a href="#" class="review" data-cardid="${movieHistory[i].cardId}">watch a review</a>
+              <a href="#" class="review" id="d+${Title}" data-imdb="${imdbID}">watch a review</a>
             </li>
             <li class="movie-list-items">
-              <a href="#" class="actors" data-cardid="${movieHistory[i].cardId}">about the actors</a>
+              <a href="#" class="actors" id="d+${Title}" data-imdb="${imdbID}">about the actors</a>
             </li>
             <li class="movie-list-items">
-              <a href="#" class="soundtracks" data-cardid="${movieHistory[i].cardId}">movie soundtracks</a>
+              <a href="#" class="soundtracks" id="d+${Title}" data-imdb="${imdbID}">movie soundtracks</a>
             </li>
           </ul>
         </div>
       </div>
       <div class="fave-link">
-        <a href="#" class="add-to-fave btn btn-dark" data-cardid="${movieHistory[i].cardId}">add to favourites</a>
+        <a href="#" class="add-to-fave btn btn-dark" id="d+${Title}" data-imdb="${imdbID}">add to favourites</a>
       </div>
     </div>
-
-
     `);
-
 
       $(movieCard).appendTo("#movies");
 
       $("#poster-background").remove();// remove movie poster background image from 
  
-
-      searchYoutube();
+      //searchYoutube();
 
       // invoking the function because once movie card is rendered can attach the event listener to add to fave button
 
@@ -205,24 +201,24 @@ function renderMovieCards() {
 
 // creating a helper function to return the movie title
 
-function getMovieTitle(clickEvent) {
-  const target = $(clickEvent.currentTarget);
+// function getMovieTitle(clickEvent) {
+//   const target = $(clickEvent.currentTarget);
 
-  // had to use Element.attr() instead of dataset because of jquery and convert it to number
-  const targetId = +target.attr("data-cardid");
+//   // had to use Element.attr() instead of dataset because of jquery and convert it to number
+//   const targetId = +target.attr("data-cardid");
 
-  console.log(targetId);
+//   console.log(targetId);
 
-  const movieObj = movieHistory.filter(
-    (element) => element.cardId === targetId
-  );
+//   const movieObj = movieHistory.filter(
+//     (element) => element.cardId === targetId
+//   );
 
-  if (targetId === movieObj[0].cardId) {
-    const title = movieObj[0].name;
+//   if (targetId === movieObj[0].cardId) {
+//     const title = movieObj[0].name;
 
-    return title;
-  }
-}
+//     return title;
+//   }
+// }
 
 function addTofave() {
   // console.log(data);
@@ -234,16 +230,33 @@ function addTofave() {
 
     console.log("add to fave button clicked");
 
-    const movieTitle = getMovieTitle(event);
+    var movieTitle = event.target.id;
+    movieTitle = movieTitle.substring(2);
+    var imdbID = $(this).attr("data-imdb");
+    //getMovieTitle(event);
 
-    console.log(movieTitle);
+    //console.log(movieTitle);
 
     // looping through the movieHistory array and checking if the title exists and if so, lets save the id movie title and imdb id to favouriteHistory
+    if(favouriteHistory.length === 0){
+      console.log("empty");
+      const movieObject = {
+        name: movieTitle,
+        imdbId: imdbID
+      };
 
-    for (let i = 0; i < movieHistory.length; i++) {
-      const movies = movieHistory[i];
+      favouriteHistory.push(movieObject);
 
-      console.log(movies);
+      window.localStorage.setItem(
+        "favourites",
+        JSON.stringify(favouriteHistory)
+      );
+    }
+    
+    for (let i = 0; i < favouriteHistory.length; i++) {
+      const movies = favouriteHistory[i];
+
+      console.log("not empty");
 
       // this returns a boolean value of true if exists or false if does not
       const title = movies["name"].includes(movieTitle);
@@ -251,27 +264,38 @@ function addTofave() {
       // if the title exists in the array then create an object from it again and store it local storage as favourites, however if it already exists in favourites then we don't want to add it to the favourites array again.
 
       // because favouritesHistory is an array of object, we need to use findIndex to return a boolean which indicates that the title does not exist
+      if (favouriteHistory.filter((e) => e.name === movieTitle).length === 0) {
+        // creating an object to store to local storage
+        
+        const movieObject = {
+          name: movieTitle,
+          imdbId: imdbID
+        };
+  
+        favouriteHistory.push(movieObject);
 
-      if (title) {
-        const exists =
-          favouriteHistory.findIndex(
-            (element) => element.name === movies["name"]
-          ) > -1;
+      
 
-        console.log(exists);
+      // if (title) {
+      //   const exists =
+      //     favouriteHistory.findIndex(
+      //       (element) => element.name === movies["name"]
+      //     ) > -1;
 
-        if (!exists) {
-          favouriteHistory.push({
-            cardId: movies["cardId"],
-            name: movies["name"],
-            imdbId: movies["imdbId"],
-          });
+      //   console.log(exists);
+
+      //   if (!exists) {
+      //     favouriteHistory.push({
+      //       name: movieTitle,
+      //     imdbId: imdbID
+      //     });
 
           window.localStorage.setItem(
             "favourites",
             JSON.stringify(favouriteHistory)
           );
-        }
+        //}
+     // }
       }
     }
   });
@@ -287,7 +311,10 @@ function searchYoutube() {
     console.log("trailer link clicked");
 
     //const movieTitle = getMovieTitle(event);
-    movie = getMovieTitle(event);
+    movie = event.target.id;
+    //getMovieTitle(event);
+    movie = movie.substring(2);
+    
     extra = "trailer";
 
     console.log(movie);
@@ -404,7 +431,7 @@ function renderFavourites(){
     }).then(function(response) {
       //set the id of the card so that the movie title can be extracted on click later on. Put a string to begin the id so that the full name is stored
       var favouriteCard = $(`
-      <div class="card favourite-card">
+      <div class="card favourite-card col-3">
       <a href=""><img src=${response.Poster} id="fave-${response.Title}"></a>                   
       </div>
     `); 
@@ -419,12 +446,10 @@ function renderFavourites(){
     var faveToPlay = event.target.id;
     faveToPlay= faveToPlay.substring(5); //remove the fave- from the beginning of the string to return just the movie name
     renderMainCard(faveToPlay);
-    getYouTube(faveToPlay);
   })
 
   function renderMainCard(movie) {
     
-
     $('#main-card').empty();
     const queryURL =
       "https://www.omdbapi.com/?t=" +
