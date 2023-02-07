@@ -236,7 +236,7 @@ function addTofave() {
     //getMovieTitle(event);
 
     //console.log(movieTitle);
-    var currentFavouriteList = JSON.parse(localStorage.getItem("favourites"));
+    var currentFavouriteList = JSON.parse(localStorage.getItem("favourites"))||[];
     // looping through the movieHistory array and checking if the title exists and if so, lets save the id movie title and imdb id to favouriteHistory
     if(currentFavouriteList.length === 0){
       console.log("empty");
