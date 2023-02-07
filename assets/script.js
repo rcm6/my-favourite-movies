@@ -24,7 +24,7 @@ const favouriteHistory = window.localStorage.getItem("favouriteHistory")
 
 // stores the string value from the form input
 
-const movie = "";
+var movie = "";
 
 // invoking the function here first so that: if there are any movies stored within local storage, will be rendered first
 
@@ -286,12 +286,14 @@ function searchYoutube() {
 
     console.log("trailer link clicked");
 
-    const movieTitle = getMovieTitle(event);
+    //const movieTitle = getMovieTitle(event);
+    movie = getMovieTitle(event);
+    extra = "trailer";
 
-    console.log(movieTitle);
+    console.log(movie);
 
-    if (movieTitle) {
-      getYouTube(movieTitle, "trailer");
+    if (movie) {
+      getYouTube(movie, extra);
     }
   });
 
@@ -302,12 +304,14 @@ function searchYoutube() {
 
     console.log("watch review clicked");
 
-    const movieTitle = getMovieTitle(event);
+    //const movieTitle = getMovieTitle(event);
+    movie = getMovieTitle(event);
+    extra = "review";
 
-    console.log(movieTitle);
+    console.log(movie);
 
-    if (movieTitle) {
-      getYouTube(movieTitle, "review");
+    if (movie) {
+      getYouTube(movieTitle, extra);
     }
   });
 
@@ -318,12 +322,14 @@ function searchYoutube() {
 
     console.log("about the actors link clicked");
 
-    const movieTitle = getMovieTitle(event);
+    //const movieTitle = getMovieTitle(event);
+    movie = getMovieTitle(event);
+    extra = "actors";
 
-    console.log(movieTitle);
+    console.log(movie);
 
-    if (movieTitle) {
-      getYouTube(movieTitle, "actors");
+    if (movie) {
+      getYouTube(movie, extra);
     }
   });
 
@@ -334,26 +340,28 @@ function searchYoutube() {
 
     console.log("soundtrack link clicked");
 
-    const movieTitle = getMovieTitle(event);
+    //const movieTitle = getMovieTitle(event);
+    movie = getMovieTitle(event);
+    extra = "soundtracks";
 
-    console.log(movieTitle);
+    console.log(movie);
 
-    if (movieTitle) {
-      getYouTube(movieTitle, "soundtracks");
+    if (movie) {
+      getYouTube(movie, extra);
     }
   });
 }
 
 // the api for the youtube api
 
-function getYouTube(movie) {
-  console.log(movie);
+function getYouTube(movie, extra) {
+  console.log(movie, extra);
   $.ajax({
     url:
       "https://youtube.googleapis.com/youtube/v3/search?q=" +
-      movie +
+      movie + "+movie+"+ extra +
 
-      " movie 2021&embeddable=true&maxResults=6&key=" +
+      "&embeddable=true&maxResults=6&key=" +
       YOUTUBE_API_KEY,
 
     method: "GET",
