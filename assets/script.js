@@ -1,8 +1,11 @@
 /*/// importing the api keys from config.js
 
-import { OMDB_API_KEY, YOUTUBE_API_KEY } from "./config.js";
+// import { OMDB_API_KEY, YOUTUBE_API_KEY } from "./config.js";
 
-// checking if api exists otherwise throw an error to the console
+// // checking if api exists otherwise throw an error to the console
+
+// if (!OMDB_API_KEY && !YOUTUBE_API_KEY)
+//   throw new Error("No API keys are provided");
 
 if (!OMDB_API_KEY && !YOUTUBE_API_KEY)
   throw new Error("No API keys are provided");*/
@@ -37,6 +40,7 @@ $("#search-button").on("click", function (event) {
   // checks if movie string exists and then invokes functions
   if (movie) {
     getMovieInfo(movie);
+    renderMainCard(movie);
     //call you tube function passing response.title into parameter
     getYouTube(movie);
     $("#search-input").val("");
@@ -62,51 +66,56 @@ function getMovieInfo(movie) {
     method: "GET",
   }).then(function (response) {
     console.log(response);
+    if(response.imdbID){
+    
+      // filters the array and checks if there is already a movie in the array before pushing the movie object
+      if (movieHistory.filter((e) => e.name === movie).length === 0) {
+        // creating an object to store to local storage
+        const movieObject = {
+          cardId: countId,
+          name: movie,
+          imdbId: response.imdbID,
+        };
 
-    // filters the array and checks if there is already a movie in the array before pushing the movie object
-    if (movieHistory.filter((e) => e.name === movie).length === 0) {
-      // creating an object to store to local storage
-      const movieObject = {
-        cardId: countId,
-        name: movie,
-        imdbId: response.imdbID,
-      };
+        // pushing object to array
+        movieHistory.push(movieObject);
 
-      // pushing object to array
-      movieHistory.push(movieObject);
+        if (countId < 6) {
+          for (let i = 0; i < movieHistory.length; i++) {
+            console.log("inside of loop getMovieInfo");
 
-      if (countId < 6) {
-        for (let i = 0; i < movieHistory.length; i++) {
-          console.log("inside of loop getMovieInfo");
+            countId = i + 1;
 
-          countId = i + 1;
+            const movie = movieHistory[i];
 
-          const movie = movieHistory[i];
-
-          movie["cardId"] = movie["cardId"] = countId;
-          countId++;
+            movie["cardId"] = movie["cardId"] = countId;
+            countId++;
+          }
         }
-      }
 
-      // if there is more than five objects in the array then one will be removed, so causing the next movie to increase to 7 and so on..
-      if (movieHistory.length > 6) {
-        movieHistory.shift();
+        // if there is more than five objects in the array then one will be removed, so causing the next movie to increase to 7 and so on..
+        if (movieHistory.length > 6) {
+          movieHistory.shift();
 
-        // this loops through the array and reassigns the correct numbers to cardId
-        for (let i = 0; i < movieHistory.length; i++) {
-          const movies = movieHistory[i];
-          movies["cardId"] = 0;
-          movies["cardId"] = movies["cardId"] + i + 1;
+          // this loops through the array and reassigns the correct numbers to cardId
+          for (let i = 0; i < movieHistory.length; i++) {
+            const movies = movieHistory[i];
+            movies["cardId"] = 0;
+            movies["cardId"] = movies["cardId"] + i + 1;
+          }
         }
-      }
-      // once the above array checked with the above conditionals, the array is stringified and stored to local storage
-      window.localStorage.setItem(
-        "searchHistory",
-        JSON.stringify(movieHistory)
-      );
+        // once the above array checked with the above conditionals, the array is stringified and stored to local storage
+        window.localStorage.setItem(
+          "searchHistory",
+          JSON.stringify(movieHistory)
+        );
 
-      // invoking the function again because user searched for a movie and clicked on the search button
-      renderMovieCards();
+        // invoking the function again because user searched for a movie and clicked on the search button
+        renderMovieCards();
+      }
+    }
+      else{
+      $("#modal-2").modal("show");
     }
   });
 }
@@ -379,7 +388,12 @@ $('#show-fav-btn').on("click", function(event){
 function renderFavourites(){
   $('#favourite').empty();
   var favouriteSaved = JSON.parse(localStorage.getItem("favourites"))||[];
-  
+
+  if(favouriteSaved.length ===0){
+    var noFaves = $('<h1>No favourites saved</h1>');
+    $('#favourite').append(noFaves);
+  }
+
   for(var i=0; i<favouriteSaved.length; i++){
 
     var queryURL = "https://www.omdbapi.com/?t=" + favouriteSaved[i].name + "&apikey=" + OMDB_API_KEY;
@@ -389,9 +403,8 @@ function renderFavourites(){
     }).then(function(response) {
       //set the id of the card so that the movie title can be extracted on click later on. Put a string to begin the id so that the full name is stored
       var favouriteCard = $(`
-      <div class="card favourite-card" style="width: 18rem;">
+      <div class="card favourite-card">
       <a href=""><img src=${response.Poster} id="fave-${response.Title}"></a>                   
-        </div>
       </div>
     `); 
     $('#favourite').append(favouriteCard);
@@ -401,7 +414,63 @@ function renderFavourites(){
 
   $('#favourite').on("click", function(event){
     event.preventDefault();
+    //$('#modal-1').modal("hide");
     var faveToPlay = event.target.id;
     faveToPlay= faveToPlay.substring(5); //remove the fave- from the beginning of the string to return just the movie name
+    renderMainCard(faveToPlay);
     getYouTube(faveToPlay);
   })
+
+  function renderMainCard(movie) {
+    $('#main-card').empty();
+    const queryURL =
+      "https://www.omdbapi.com/?t=" +
+      movie +
+      "&apikey=" +
+      OMDB_API_KEY;
+    $.ajax({
+      url: queryURL,
+      method: "GET",
+    }).then(function (response) {
+    
+
+      var movieCard = $(`
+      <div class="card" style="width: 100%;">
+      
+        <img src="${response.Poster}" alt="movie poster" class="poster-main"/>
+        <h2 class="movie-title">${response.Title}</h2>
+        <h2 class="release-date">${response.Year}</h2>
+     
+
+      <div class="movie-card-summary">
+        <p class="movie-plot">
+              ${response.Plot}
+        </p>
+      </div>
+      <div class="youtube-links">
+      <h2 class="header-youtube">search on youtube</h2>
+      <div class="movie-card-links">
+        <ul class="movie-card-list">
+          <li class="movie-list-items">
+            <a href="#" class="trailer" data-searchVid="${response.Title}+'trailer'">watch a trailer</a>
+          </li>
+          <li class="movie-list-items">
+            <a href="#" class="review" data-searchVid="${response.Title}+'review'">watch a review</a>
+          </li>
+          <li class="movie-list-items">
+            <a href="#" class="actors" data-searchVid="${response.Title}+'actors'">about the actors</a>
+          </li>
+          <li class="movie-list-items">
+            <a href="#" class="soundtracks" data-searchVid="${response.Title}+'soundtrack'">movie soundtracks</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+    `);
+    $('#main-card').append(movieCard);
+    $("#modal-3").modal("show");
+    });
+  }
+

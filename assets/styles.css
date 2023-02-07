@@ -174,3 +174,16 @@ main {
 #poster-background {
     opacity: 0.1;
   }
+
+
+.poster-main{
+  max-height: 18rem;
+  width: auto;
+  align-self: center;
+}
+
+#favourite{
+  display: flex;
+  justify-content: space-around;
+ 
+}
