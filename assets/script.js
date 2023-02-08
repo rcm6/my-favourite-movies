@@ -116,6 +116,9 @@ function getMovieInfo(movie) {
     }
       else{
       $("#modal-2").modal("show");
+      //empties you tube div
+      $("#you-tube").empty();
+
       
     }
   });
