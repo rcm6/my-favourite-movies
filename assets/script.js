@@ -164,16 +164,16 @@ function renderMovieCards() {
         <div class="movie-card-links">
           <ul class="movie-card-list">
             <li class="movie-list-items">
-              <a href="#" class="trailer" id="d+${Title}" data-imdb="${imdbID}" onclick = "getYouTube('${Title}', 'trailer')" >watch a trailer</a>
+              <a href="javascript:void(0);" class="trailer" id="d+${Title}" data-imdb="${imdbID}" onclick = "getYouTube('${Title}', 'trailer')" >watch a trailer</a>
             </li>
             <li class="movie-list-items">
-              <a href="#" class="review" id="d+${Title}" data-imdb="${imdbID}" onclick = "getYouTube('${Title}', 'review')" >watch a review</a>
+              <a href="javascript:void(0);" class="review" id="d+${Title}" data-imdb="${imdbID}" onclick = "getYouTube('${Title}', 'review')" >watch a review</a>
             </li>
             <li class="movie-list-items">
-              <a href="#" class="actors" id="d+${Title}" data-imdb="${imdbID}" onclick = "getYouTube('${Title}', 'actors')" >about the actors</a>
+              <a href="javascript:void(0);" class="actors" id="d+${Title}" data-imdb="${imdbID}" onclick = "getYouTube('${Title}', 'actors')" >about the actors</a>
             </li>
             <li class="movie-list-items">
-              <a href="#" class="soundtracks" id="d+${Title}" data-imdb="${imdbID}" onclick = "getYouTube('${Title}', 'soundtracks')" >movie soundtracks</a>
+              <a href="javascript:void(0);" class="soundtracks" id="d+${Title}" data-imdb="${imdbID}" onclick = "getYouTube('${Title}', 'soundtracks')" >movie soundtracks</a>
             </li>
           </ul>
         </div>
@@ -440,7 +440,7 @@ function renderFavourites(){
       //set the id of the card so that the movie title can be extracted on click later on. Put a string to begin the id so that the full name is stored
       var favouriteCard = $(`
       <div class="card favourite-card col-3">
-      <a href=""><img src=${response.Poster} id="fave-${response.Title}" data-dismiss="modal" ></a>                   
+      <a href="javascript:void(0);"><img src=${response.Poster} id="fave-${response.Title}" data-dismiss="modal" ></a>                   
       </div>
     `); 
     $('#favourite').append(favouriteCard);
@@ -492,16 +492,16 @@ function renderFavourites(){
       <div class="movie-card-links">
         <ul class="movie-card-list">
           <li class="movie-list-items">
-          <a href="#" class="trailer_main" data-searchVid="${response.Title}" onclick = "getYouTube('${response.Title}', 'trailer')" data-dismiss="modal" >watch a trailer</a>
+          <a href="javascript:void(0);" class="trailer_main" data-searchVid="${response.Title}" onclick = "getYouTube('${response.Title}', 'trailer')" data-dismiss="modal" >watch a trailer</a>
           </li>
           <li class="movie-list-items">
-            <a href="#" class="reviews_main" data-searchVid="${response.Title}" onclick = "getYouTube('${response.Title}', 'review')" data-dismiss="modal" >watch a review</a>
+            <a href="javascript:void(0);" class="reviews_main" data-searchVid="${response.Title}" onclick = "getYouTube('${response.Title}', 'review')" data-dismiss="modal" >watch a review</a>
           </li>
           <li class="movie-list-items">
-            <a href="#" class="actors_main" data-searchVid="${response.Title}" onclick = "getYouTube('${response.Title}', 'actors')" data-dismiss="modal" >about the actors</a>
+            <a href="javascript:void(0);" class="actors_main" data-searchVid="${response.Title}" onclick = "getYouTube('${response.Title}', 'actors')" data-dismiss="modal" >about the actors</a>
           </li>
           <li class="movie-list-items">
-            <a href="#" class="soundtracks_main" data-searchVid="${response.Title}" onclick = "getYouTube('${response.Title}', 'soundtrack')" data-dismiss="modal" >movie soundtracks</a>
+            <a href="javascript:void(0);" class="soundtracks_main" data-searchVid="${response.Title}" onclick = "getYouTube('${response.Title}', 'soundtrack')" data-dismiss="modal" >movie soundtracks</a>
           </li>
         </ul>
       </div>
