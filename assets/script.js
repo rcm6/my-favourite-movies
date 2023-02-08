@@ -164,16 +164,16 @@ function renderMovieCards() {
         <div class="movie-card-links">
           <ul class="movie-card-list">
             <li class="movie-list-items">
-              <a href="#" class="trailer" id="d+${Title}" data-imdb="${imdbID}">watch a trailer</a>
+              <a href="#" class="trailer" id="d+${Title}" data-imdb="${imdbID}" onclick = "getYouTube('${Title}', 'trailer')" >watch a trailer</a>
             </li>
             <li class="movie-list-items">
-              <a href="#" class="review" id="d+${Title}" data-imdb="${imdbID}">watch a review</a>
+              <a href="#" class="review" id="d+${Title}" data-imdb="${imdbID}" onclick = "getYouTube('${Title}', 'review')" >watch a review</a>
             </li>
             <li class="movie-list-items">
-              <a href="#" class="actors" id="d+${Title}" data-imdb="${imdbID}">about the actors</a>
+              <a href="#" class="actors" id="d+${Title}" data-imdb="${imdbID}" onclick = "getYouTube('${Title}', 'actors')" >about the actors</a>
             </li>
             <li class="movie-list-items">
-              <a href="#" class="soundtracks" id="d+${Title}" data-imdb="${imdbID}">movie soundtracks</a>
+              <a href="#" class="soundtracks" id="d+${Title}" data-imdb="${imdbID}" onclick = "getYouTube('${Title}', 'soundtracks')" >movie soundtracks</a>
             </li>
           </ul>
         </div>
@@ -301,89 +301,91 @@ function addTofave() {
   });
 }
 
-// function to listen to search on youtube links within movie card
 
-function searchYoutube() {
-  // event listener on watch a trailer link
-  $(".trailer").on("click", function (event) {
-    event.preventDefault();
+//this is no longer needed to check for the Search events - replaced with on click event on links
+// // function to listen to search on youtube links within saved movie cards
 
-    console.log("trailer link clicked");
+// function searchYoutube() {
+//   // event listener on watch a trailer link
+//   $(".trailer").on("click", function (event) {
+//     event.preventDefault();
 
-    //const movieTitle = getMovieTitle(event);
-    movie = event.target.id;
-    //getMovieTitle(event);
-    movie = movie.substring(2);
+//     console.log("trailer link clicked");
+
+//     //const movieTitle = getMovieTitle(event);
+//     movie = event.target.id;
+//     //getMovieTitle(event);
+//     movie = movie.substring(2);
     
-    extra = "trailer";
+//     extra = "trailer";
 
-    console.log(movie);
+//     console.log(movie);
 
-    if (movie) {
-      getYouTube(movie, extra);
-    }
-  });
+//     if (movie) {
+//       getYouTube(movie, extra);
+//     }
+//   });
 
-  // event listener on watch a review link
+//   // event listener on watch a review link
 
-  $(".review").on("click", function (event) {
-    event.preventDefault();
+//   $(".review").on("click", function (event) {
+//     event.preventDefault();
 
-    console.log("watch review clicked");
+//     console.log("watch review clicked");
 
-    //const movieTitle = getMovieTitle(event);
-    movie = event.target.id;
-    //getMovieTitle(event);
-    movie = movie.substring(2);
-    extra = "review";
+//     //const movieTitle = getMovieTitle(event);
+//     movie = event.target.id;
+//     //getMovieTitle(event);
+//     movie = movie.substring(2);
+//     extra = "review";
 
-    console.log(movie);
+//     console.log(movie);
 
-    if (movie) {
-      getYouTube(movieTitle, extra);
-    }
-  });
+//     if (movie) {
+//       getYouTube(movieTitle, extra);
+//     }
+//   });
 
-  // event listener on about the actors link
+//   // event listener on about the actors link
 
-  $(".actors").on("click", function (event) {
-    event.preventDefault();
+//   $(".actors").on("click", function (event) {
+//     event.preventDefault();
 
-    console.log("about the actors link clicked");
+//     console.log("about the actors link clicked");
 
-    //const movieTitle = getMovieTitle(event);
-    movie = event.target.id;
-    //getMovieTitle(event);
-    movie = movie.substring(2);
-    extra = "actors";
+//     //const movieTitle = getMovieTitle(event);
+//     movie = event.target.id;
+//     //getMovieTitle(event);
+//     movie = movie.substring(2);
+//     extra = "actors";
 
-    console.log(movie);
+//     console.log(movie);
 
-    if (movie) {
-      getYouTube(movie, extra);
-    }
-  });
+//     if (movie) {
+//       getYouTube(movie, extra);
+//     }
+//   });
 
-  // event listener on movie soundtracks link
+//   // event listener on movie soundtracks link
 
-  $(".soundtracks").on("click", function (event) {
-    event.preventDefault();
+//   $(".soundtracks").on("click", function (event) {
+//     event.preventDefault();
 
-    console.log("soundtrack link clicked");
+//     console.log("soundtrack link clicked");
 
-    //const movieTitle = getMovieTitle(event);
-    movie = event.target.id;
-    //getMovieTitle(event);
-    movie = movie.substring(2);
-    extra = "soundtracks";
+//     //const movieTitle = getMovieTitle(event);
+//     movie = event.target.id;
+//     //getMovieTitle(event);
+//     movie = movie.substring(2);
+//     extra = "soundtracks";
 
-    console.log(movie);
+//     console.log(movie);
 
-    if (movie) {
-      getYouTube(movie, extra);
-    }
-  });
-}
+//     if (movie) {
+//       getYouTube(movie, extra);
+//     }
+//   });
+// }
 
 // the api for the youtube api
 
@@ -490,16 +492,16 @@ function renderFavourites(){
       <div class="movie-card-links">
         <ul class="movie-card-list">
           <li class="movie-list-items">
-            <a href="#" class="trailer" data-searchVid="${response.Title}+'trailer'">watch a trailer</a>
+          <a href="#" class="trailer_main" data-searchVid="${response.Title}" onclick = "getYouTube('${response.Title}', 'trailer')" >watch a trailer</a>
           </li>
           <li class="movie-list-items">
-            <a href="#" class="review" data-searchVid="${response.Title}+'review'">watch a review</a>
+            <a href="#" class="reviews_main" data-searchVid="${response.Title}" onclick = "getYouTube('${response.Title}', 'review')" >watch a review</a>
           </li>
           <li class="movie-list-items">
-            <a href="#" class="actors" data-searchVid="${response.Title}+'actors'">about the actors</a>
+            <a href="#" class="actors_main" data-searchVid="${response.Title}" onclick = "getYouTube('${response.Title}', 'actors')" >about the actors</a>
           </li>
           <li class="movie-list-items">
-            <a href="#" class="soundtracks" data-searchVid="${response.Title}+'soundtrack'">movie soundtracks</a>
+            <a href="#" class="soundtracks_main" data-searchVid="${response.Title}" onclick = "getYouTube('${response.Title}', 'soundtrack')" >movie soundtracks</a>
           </li>
         </ul>
       </div>
@@ -511,6 +513,3 @@ function renderFavourites(){
     $("#modal-3").modal("show");
     });
   }
- 
-  
-
