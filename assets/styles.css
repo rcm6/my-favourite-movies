@@ -70,3 +70,120 @@ img {
   text-align: center;
   padding: 0.5em;
 }
+
+
+/* Main Styling */
+
+/* Jumbotron styling */
+.jumbotron .container {
+  padding-top:130px;
+}
+
+.jumbotron h1, .jumbotron h2 {color: #fff;
+  position: relative;
+  z-index: 9999;
+}
+
+.jumbotron {
+  position: relative;
+  padding: 0;
+  height: 400px;
+  margin-bottom: 0;
+  background: linear-gradient(135deg, #8b8a8d 0%, #17151a 100%);
+  /*-webkit-clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);*/
+  -webkit-clip-path: polygon(100% 0, 100% 98%, 50% 100%, 0 98%, 0 0);
+clip-path: polygon(100% 0, 100% 98%, 50% 100%, 0 98%, 0 0);
+  /*clip-path: polygon(100% 0, 100% 80%, 50% 84%, 0 80%, 0 0);*/
+  overflow: visible;
+  background: url(images/best-movie-posters-of-2022.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  z-index: 1;
+}
+
+.jumbotron:after {
+  
+  background: linear-gradient(135deg, #8b8a8d 0%, #17151a 100%);
+  opacity: 0.75;
+  display: block;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  content: ' ';
+  position: absolute;
+}
+/* bring elements to front */
+.jumbotron form, button {
+  z-index: 9999;
+  position: relative;
+}
+
+/* bottom banner */
+#bottom-banner {
+  padding: 0;
+  height: 200px;
+  position: relative;
+  background: linear-gradient(135deg, #8b8a8d 0%, #17151a 100%);
+  -webkit-clip-path: polygon(100% 5%, 100% 100%, 0 100%, 0 5%, 50% 0);
+clip-path: polygon(100% 5%, 100% 100%, 0 100%, 0 5%, 50% 0);
+  overflow: visible
+}
+
+.bottom-banner-image {
+  background: url(images/best-movie-posters-of-2022.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  height: 100%;
+}
+
+.bottom-banner-image:after {
+
+  background: linear-gradient(135deg, #8b8a8d 0%, #17151a 100%);
+  opacity: 0.75;
+  display: block;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  content: ' ';
+  position: absolute;
+}
+
+body {
+    background-color: #2b3856fc;
+}
+main {
+    position: relative;
+    top:-25px;
+    padding:0 0 0 0;
+    z-index: 0;
+}
+
+#movie-summary {
+    padding: 27px 0 10px 0;
+    background-color: #fff;
+    
+}
+
+#poster-background {
+    opacity: 0.1;
+  }
+
+
+.poster-main{
+  max-height: 18rem;
+  width: auto;
+  align-self: center;
+}
+
+#favourite{
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
