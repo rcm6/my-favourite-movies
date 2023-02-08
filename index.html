@@ -32,8 +32,8 @@
 
     <!-- Jumbotron start -->
     <div class="jumbotron jumbotron-fluid">
-      <div class="container text-center ">
-        <h2 id="form-heading" class="w-100" >Search for a movie</h2>
+      <div class="container text-center">
+        <h2 id="form-heading" class="w-100">Search for a movie</h2>
         <form id="search-form" class="form w-100 d-flex justify-content-center">
           <div class="form-inline form-group">
             <div class="input-group w-100">
@@ -60,15 +60,15 @@
         </form>
 
         <div class="d-flex align-items-center justify-content-center">
-        <button
-          type="button"
-          id="show-fav-btn"
-          class="btn btn-lg btn-block btn-primary w-25"
-          data-toggle="modal"
-          data-target="#modal-1"
-        >
-          Favourites
-        </button>
+          <button
+            type="button"
+            id="show-fav-btn"
+            class="btn btn-lg btn-block btn-primary w-25"
+            data-toggle="modal"
+            data-target="#modal-1"
+          >
+            Favourites
+          </button>
         </div>
 
         <!-- Favourites modal-->
@@ -79,7 +79,10 @@
                 <h5 class="modal-title">Favourites</h5>
               </div>
               <div class="modal-body">
-                <div id="favourite">id="favourite"</div>
+                <div id="favourite">
+                  <!-- Message when no movie present in favourites -->
+                  <p id="favourite-msg"></p>
+                </div>
               </div>
               <div class="modal-footer">
                 <button
@@ -103,19 +106,41 @@
     <main>
       <div class="container">
         <!-- row 1 start -->
-        <section class="row bg-info text-white mt-2">
-          <div class="col-md-12">
-            <div id="movie-summary">id="movie-summary"</div>
+        <section class="row bg-info text-white mt-2 py-3">
+          <div class="col-md-12 d-flex justify-content-between">
+            <div id="movie-summary">
+              <h5 id="movie-title"></h5>
+              <p id="description"></p>
+            </div>
+            <div class="btns-container">
+              <!-- Add to favourites button -->
+              <a
+                href="#"
+                id="save-favourite-btn"
+                class="btn border-white text-white d-none"
+              >
+                <i class="fa-regular fa-star mr-2 text-warning"></i>Save</a
+              >
+            </div>
           </div>
         </section>
 
         <!-- row 2 start -->
-        <section class="row bg-secondary text-white mt-2">
+        <section class="row bg-secondary text-white my-2">
           <div class="col-md-12">
-            <div id="you-tube">id="you-tube"
+            <div id="you-tube">
+              <!-- id="you-tube" -->
 
-          <iframe width="800" height="600" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
+              <iframe
+                class="w-100"
+                width="800"
+                height="600"
+                src=""
+                title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+              ></iframe>
             </div>
           </div>
         </section>
