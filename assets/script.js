@@ -27,7 +27,6 @@ const favouriteHistory = window.localStorage.getItem("favouriteHistory")
 const movie = "";
 
 // invoking the function here first so that: if there are any movies stored within local storage, will be rendered first
-
 renderMovieCards();
 
 // an event listener on to search button on page
@@ -49,8 +48,6 @@ $("#search-button").on("click", function (event) {
   }
 });
 
-// need this variable to be global so that it updates before the function is executed
-// let countId = 1;
 // function to retrieve data from the omdb api
 
 function getMovieInfo(movie) {
@@ -66,8 +63,7 @@ function getMovieInfo(movie) {
     method: "GET",
   }).then(function (response) {
     console.log(response);
-    if(response.imdbID){
-    
+    if (response.imdbID) {
       // filters the array and checks if there is already a movie in the array before pushing the movie object
       if (movieHistory.filter((e) => e.name === movie).length === 0) {
         // creating an object to store to local storage
@@ -80,6 +76,7 @@ function getMovieInfo(movie) {
         // pushing object to array
         movieHistory.push(movieObject);
 
+        //if less than 6, it loops through the array and returns the correct id number
         if (countId < 6) {
           for (let i = 0; i < movieHistory.length; i++) {
             console.log("inside of loop getMovieInfo");
@@ -113,8 +110,7 @@ function getMovieInfo(movie) {
         // invoking the function again because user searched for a movie and clicked on the search button
         renderMovieCards();
       }
-    }
-      else{
+    } else {
       $("#modal-2").modal("show");
     }
   });
@@ -125,10 +121,13 @@ function getMovieInfo(movie) {
 function renderMovieCards() {
   $("#movies").empty();
 
-  // logging the array here to show if there are any movie objects currently stored
-  console.log(movieHistory);
+  // lets create a variable here to store a sorted array in ascending order
 
-  for (let i = 0; i < movieHistory.length; i++) {
+  const movieHistorySorted = movieHistory.sort((aId, bId) =>
+    aId.cardId > bId.cardId ? 1 : aId.cardId < bId.cardId ? -1 : 0
+  );
+
+  for (let i = 0; i < movieHistorySorted.length; i++) {
     const queryURL =
       "https://www.omdbapi.com/?t=" +
       movieHistory[i].name +
@@ -181,15 +180,26 @@ function renderMovieCards() {
         <a href="#" class="add-to-fave btn btn-dark" data-cardid="${movieHistory[i].cardId}">add to favourites</a>
       </div>
     </div>
-
-
+    
+    
     `);
 
+      // logging the array here to show if there are any movie objects currently stored
+      console.log(movieHistory);
+      console.log("movie sorted array ", movieHistorySorted);
+
+      // $.each(movieHistorySorted, function (index, movie) {
+      //   index = index + 1;
+      //   console.log(index, movie);
+
+      //   if (movie.cardId === index) {
+      //     $(movieCard).appendTo("#movies");
+      //   }
+      // });
 
       $(movieCard).appendTo("#movies");
 
-      $("#poster-background").remove();// remove movie poster background image from 
- 
+      $("#poster-background").remove(); // remove movie poster background image from
 
       searchYoutube();
 
@@ -265,6 +275,8 @@ function addTofave() {
             name: movies["name"],
             imdbId: movies["imdbId"],
           });
+
+          console.log("favourite saved");
 
           window.localStorage.setItem(
             "favourites",
@@ -346,12 +358,11 @@ function searchYoutube() {
 // the api for the youtube api
 
 function getYouTube(movie) {
-  console.log(movie);
+  // console.log(movie);
   $.ajax({
     url:
       "https://youtube.googleapis.com/youtube/v3/search?q=" +
       movie +
-
       " movie 2021&embeddable=true&maxResults=6&key=" +
       YOUTUBE_API_KEY,
 
@@ -371,62 +382,59 @@ function getYouTube(movie) {
   });
 }
 
-$('#show-fav-btn').on("click", function(event){
+$("#show-fav-btn").on("click", function (event) {
   event.preventDefault();
   renderFavourites();
-})
+});
 
+function renderFavourites() {
+  $("#favourite").empty();
+  var favouriteSaved = JSON.parse(localStorage.getItem("favourites")) || [];
 
-function renderFavourites(){
-  $('#favourite').empty();
-  var favouriteSaved = JSON.parse(localStorage.getItem("favourites"))||[];
-
-  if(favouriteSaved.length ===0){
-    var noFaves = $('<h1>No favourites saved</h1>');
-    $('#favourite').append(noFaves);
+  if (favouriteSaved.length === 0) {
+    var noFaves = $("<h1>No favourites saved</h1>");
+    $("#favourite").append(noFaves);
   }
 
-  for(var i=0; i<favouriteSaved.length; i++){
-
-    var queryURL = "https://www.omdbapi.com/?t=" + favouriteSaved[i].name + "&apikey=" + OMDB_API_KEY;
-    $.ajax({
-      url: queryURL,
-      method: "GET"
-    }).then(function(response) {
-      //set the id of the card so that the movie title can be extracted on click later on. Put a string to begin the id so that the full name is stored
-      var favouriteCard = $(`
-      <div class="card favourite-card">
-      <a href=""><img src=${response.Poster} id="fave-${response.Title}"></a>                   
-      </div>
-    `); 
-    $('#favourite').append(favouriteCard);
-    });
-  }
-}
-
-  $('#favourite').on("click", function(event){
-    event.preventDefault();
-    //$('#modal-1').modal("hide");
-    var faveToPlay = event.target.id;
-    faveToPlay= faveToPlay.substring(5); //remove the fave- from the beginning of the string to return just the movie name
-    renderMainCard(faveToPlay);
-    getYouTube(faveToPlay);
-  })
-
-  function renderMainCard(movie) {
-    $('#main-card').empty();
-    const queryURL =
+  for (var i = 0; i < favouriteSaved.length; i++) {
+    var queryURL =
       "https://www.omdbapi.com/?t=" +
-      movie +
+      favouriteSaved[i].name +
       "&apikey=" +
       OMDB_API_KEY;
     $.ajax({
       url: queryURL,
       method: "GET",
     }).then(function (response) {
-    
+      //set the id of the card so that the movie title can be extracted on click later on. Put a string to begin the id so that the full name is stored
+      var favouriteCard = $(`
+      <div class="card favourite-card">
+      <a href=""><img src=${response.Poster} id="fave-${response.Title}"></a>                   
+      </div>
+    `);
+      $("#favourite").append(favouriteCard);
+    });
+  }
+}
 
-      var movieCard = $(`
+$("#favourite").on("click", function (event) {
+  event.preventDefault();
+  //$('#modal-1').modal("hide");
+  var faveToPlay = event.target.id;
+  faveToPlay = faveToPlay.substring(5); //remove the fave- from the beginning of the string to return just the movie name
+  renderMainCard(faveToPlay);
+  getYouTube(faveToPlay);
+});
+
+function renderMainCard(movie) {
+  $("#main-card").empty();
+  const queryURL =
+    "https://www.omdbapi.com/?t=" + movie + "&apikey=" + OMDB_API_KEY;
+  $.ajax({
+    url: queryURL,
+    method: "GET",
+  }).then(function (response) {
+    var movieCard = $(`
       <div class="card" style="width: 100%;">
       
         <img src="${response.Poster}" alt="movie poster" class="poster-main"/>
@@ -461,8 +469,7 @@ function renderFavourites(){
   </div>
 
     `);
-    $('#main-card').append(movieCard);
+    $("#main-card").append(movieCard);
     $("#modal-3").modal("show");
-    });
-  }
-
+  });
+}
