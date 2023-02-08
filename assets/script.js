@@ -1,25 +1,11 @@
-/*/// importing the api keys from config.js
-
-// import { OMDB_API_KEY, YOUTUBE_API_KEY } from "./config.js";
-
-// // checking if api exists otherwise throw an error to the console
-
-// if (!OMDB_API_KEY && !YOUTUBE_API_KEY)
-//   throw new Error("No API keys are provided");
-
-if (!OMDB_API_KEY && !YOUTUBE_API_KEY)
-  throw new Error("No API keys are provided");*/
+// Api keys
 OMDB_API_KEY = "1cd5aea2";
-YOUTUBE_API_KEY = "AIzaSyCQ5A0D8pEufOYOhAjZS988NVbxvuRdasc";
+YOUTUBE_API_KEY = "AIzaSyDgb40pPDUgfTAJRSL_rNpputm0ksw60N8";
 
 // global variables to store the movie search history and favourites history to local storage
 
 let movieHistory = window.localStorage.getItem("searchHistory")
   ? JSON.parse(window.localStorage.getItem("searchHistory"))
-  : [];
-
-let favouriteHistory = window.localStorage.getItem("favouriteHistory")
-  ? JSON.parse(window.localStorage.getItem("favouriteHistory"))
   : [];
 
 // stores the string value from the form input
@@ -49,8 +35,6 @@ $("#search-button").on("click", function (event) {
   }
 });
 
-// need this variable to be global so that it updates before the function is executed
-// let countId = 1;
 // function to retrieve data from the omdb api
 
 function getMovieInfo(movie) {
@@ -66,8 +50,7 @@ function getMovieInfo(movie) {
     method: "GET",
   }).then(function (response) {
     console.log(response);
-    if(response.imdbID){
-    
+    if (response.imdbID) {
       // filters the array and checks if there is already a movie in the array before pushing the movie object
       if (movieHistory.filter((e) => e.name === movie).length === 0) {
         // creating an object to store to local storage
@@ -113,13 +96,10 @@ function getMovieInfo(movie) {
         // invoking the function again because user searched for a movie and clicked on the search button
         renderMovieCards();
       }
-    }
-      else{
+    } else {
       $("#modal-2").modal("show");
       //empties you tube div
       $("#you-tube").empty();
-
-      
     }
   });
 }
@@ -166,32 +146,33 @@ function renderMovieCards() {
         <h2 class="header-youtube">search on youtube</h2>
         <div class="movie-card-links">
           <ul class="movie-card-list">
-            <li class="movie-list-items">
-              <a href="javascript:void(0);" class="trailer" id="d+${Title}" data-imdb="${imdbID}" onclick = "getYouTube('${Title}', 'trailer')" >watch a trailer</a>
-            </li>
-            <li class="movie-list-items">
-              <a href="javascript:void(0);" class="review" id="d+${Title}" data-imdb="${imdbID}" onclick = "getYouTube('${Title}', 'review')" >watch a review</a>
-            </li>
-            <li class="movie-list-items">
-              <a href="javascript:void(0);" class="actors" id="d+${Title}" data-imdb="${imdbID}" onclick = "getYouTube('${Title}', 'actors')" >about the actors</a>
-            </li>
-            <li class="movie-list-items">
-              <a href="javascript:void(0);" class="soundtracks" id="d+${Title}" data-imdb="${imdbID}" onclick = "getYouTube('${Title}', 'soundtracks')" >movie soundtracks</a>
-            </li>
+          <li class="movie-list-items">
+          <a href="#" class="trailer" id="${Title}" data-imdb="${imdbID}">watch a trailer</a>
+        </li>
+        <li class="movie-list-items">
+          <a href="#"  class="review" id="${Title}" data-imdb="${imdbID}">watch a review</a>
+        </li>
+        <li class="movie-list-items">
+          <a href="#" class="actors" id="${Title}" data-imdb="${imdbID}">about the actors</a>
+        </li>
+        <li class="movie-list-items">
+          <a href="#" class="soundtracks" id="${Title}" data-imdb="${imdbID}">movie soundtracks</a>
+        </li>
           </ul>
         </div>
       </div>
       <div class="fave-link">
-        <a href="#" class="add-to-fave btn btn-dark" id="d+${Title}" data-imdb="${imdbID}">add to favourites</a>
+        <a href="#" class="add-to-fave btn btn-dark" id="${Title}" data-imdb="${imdbID}">add to favourites</a>
       </div>
     </div>
     `);
 
       $(movieCard).appendTo("#movies");
 
-      $("#poster-background").remove();// remove movie poster background image from 
- 
-      //searchYoutube();
+      $("#poster-background").remove(); // remove movie poster background image from
+
+      // invoking this function here; so that the event listener on all the links will be listened on
+      searchYoutube();
 
       // invoking the function because once movie card is rendered can attach the event listener to add to fave button
 
@@ -202,30 +183,7 @@ function renderMovieCards() {
 
 // this function takes in the response object from getMovieInfo and then checks if there is a match within movieHistory object in local storage and will then create a new local storage titled favourites
 
-// creating a helper function to return the movie title
-
-// function getMovieTitle(clickEvent) {
-//   const target = $(clickEvent.currentTarget);
-
-//   // had to use Element.attr() instead of dataset because of jquery and convert it to number
-//   const targetId = +target.attr("data-cardid");
-
-//   console.log(targetId);
-
-//   const movieObj = movieHistory.filter(
-//     (element) => element.cardId === targetId
-//   );
-
-//   if (targetId === movieObj[0].cardId) {
-//     const title = movieObj[0].name;
-
-//     return title;
-//   }
-// }
-
 function addTofave() {
-  // console.log(data);
-
   // attaching an event listener to the add to favourites button
 
   $(".add-to-fave").on("click", function (event) {
@@ -233,162 +191,156 @@ function addTofave() {
 
     console.log("add to fave button clicked");
 
-    var movieTitle = event.target.id;
-    movieTitle = movieTitle.substring(2);
-    var imdbID = $(this).attr("data-imdb");
-    //getMovieTitle(event);
+    let movieTitle = event.target.id;
+    movieTitle = movieTitle.toLowerCase();
 
-    //console.log(movieTitle);
-    var currentFavouriteList = JSON.parse(localStorage.getItem("favourites"))||[];
-    // looping through the movieHistory array and checking if the title exists and if so, lets save the id movie title and imdb id to favouriteHistory
-    if(currentFavouriteList.length === 0){
-      console.log("empty");
+    console.log("movie title: ", movieTitle);
+    const imdbID = $(this).attr("data-imdb");
+
+    const currentFavouriteList = window.localStorage.getItem("favourites")
+      ? JSON.parse(window.localStorage.getItem("favourites"))
+      : [];
+
+    console.log("currentFavouritesList array: ", currentFavouriteList);
+
+    // if there is no current movie then save to local storage
+    if (currentFavouriteList.length === 0) {
+      console.log("favourites is empty adding to favourites");
       const movieObject = {
         name: movieTitle,
-        imdbId: imdbID
+        imdbId: imdbID,
       };
 
+      // pushing to array
       currentFavouriteList.push(movieObject);
-
+      // and saving to local storage
       window.localStorage.setItem(
         "favourites",
         JSON.stringify(currentFavouriteList)
       );
-    }
-    
-    for (let i = 0; i < currentFavouriteList.length; i++) {
-      const movies = currentFavouriteList[i];
+    } else {
+      for (let i = 0; i < currentFavouriteList.length; i++) {
+        const movies = currentFavouriteList[i];
 
-      console.log("not empty");
+        console.log("favourites is not empty");
+        console.log(
+          "logging all of favourites array here: ",
+          currentFavouriteList
+        );
+        console.log("movies in favourites: ", movies);
 
-      // this returns a boolean value of true if exists or false if does not
-      const title = movies["name"].includes(movieTitle);
+        // this returns a boolean value of true if exists or false if does not
+        const title = movies["name"].includes(movieTitle);
 
-      // if the title exists in the array then create an object from it again and store it local storage as favourites, however if it already exists in favourites then we don't want to add it to the favourites array again.
+        console.log(currentFavouriteList[i]["name"]);
+        console.log("Does the title match the title clicked on: ", title);
 
-      // because favouritesHistory is an array of object, we need to use findIndex to return a boolean which indicates that the title does not exist
-      if (currentFavouriteList.filter((e) => e.name === movieTitle).length === 0) {
-        // creating an object to store to local storage
-        
-        const movieObject = {
-          name: movieTitle,
-          imdbId: imdbID
-        };
-  
-        currentFavouriteList.push(movieObject);
+        // if the title does not exist: i.e is false we translate to true here
+        if (!title) {
+          // the above condition is not enough to test if the title exists in all of the array
+          // we need to loop through the array and return another boolean value
+          const exists =
+            currentFavouriteList.findIndex(
+              (element) => element.name === movieTitle
+            ) > -1;
 
-      
+          console.log("But does title exist? : ", exists);
 
-      // if (title) {
-      //   const exists =
-      //     favouriteHistory.findIndex(
-      //       (element) => element.name === movies["name"]
-      //     ) > -1;
+          // if the above is false we need to translate to true to push the object and store to local storage as favourites, if the above is true then the code below will not execute
+          if (!exists) {
+            const movieObject = {
+              name: movieTitle,
+              imdbID: imdbID,
+            };
 
-      //   console.log(exists);
+            // pushing the object to the array
+            currentFavouriteList.push(movieObject);
 
-      //   if (!exists) {
-      //     favouriteHistory.push({
-      //       name: movieTitle,
-      //     imdbId: imdbID
-      //     });
+            // and then saving this to local storage
 
-          window.localStorage.setItem(
-            "favourites",
-            JSON.stringify(currentFavouriteList)
-          );
-        //}
-     // }
+            window.localStorage.setItem(
+              "favourites",
+              JSON.stringify(currentFavouriteList)
+            );
+          }
+        }
       }
     }
   });
 }
 
+// function to listens to search on youtube links within movie card
 
-//this is no longer needed to check for the Search events - replaced with on click event on links
-// // function to listen to search on youtube links within saved movie cards
+function searchYoutube() {
+  // event listener on watch a trailer link
+  $(".trailer").on("click", function (event) {
+    event.preventDefault();
 
-// function searchYoutube() {
-//   // event listener on watch a trailer link
-//   $(".trailer").on("click", function (event) {
-//     event.preventDefault();
+    console.log("trailer link clicked");
 
-//     console.log("trailer link clicked");
+    // lets get the target clicked on
 
-//     //const movieTitle = getMovieTitle(event);
-//     movie = event.target.id;
-//     //getMovieTitle(event);
-//     movie = movie.substring(2);
-    
-//     extra = "trailer";
+    let movieTitle = event.target.id.toLowerCase();
+    extra = "trailer";
 
-//     console.log(movie);
+    console.log(movieTitle);
 
-//     if (movie) {
-//       getYouTube(movie, extra);
-//     }
-//   });
+    if (movieTitle) {
+      getYouTube(movieTitle, extra);
+    }
+  });
 
-//   // event listener on watch a review link
+  // event listener on watch a review link
 
-//   $(".review").on("click", function (event) {
-//     event.preventDefault();
+  $(".review").on("click", function (event) {
+    event.preventDefault();
 
-//     console.log("watch review clicked");
+    console.log("watch review clicked");
 
-//     //const movieTitle = getMovieTitle(event);
-//     movie = event.target.id;
-//     //getMovieTitle(event);
-//     movie = movie.substring(2);
-//     extra = "review";
+    let movieTitle = event.target.id.toLowerCase();
+    extra = "review";
 
-//     console.log(movie);
+    console.log(movieTitle);
 
-//     if (movie) {
-//       getYouTube(movieTitle, extra);
-//     }
-//   });
+    if (movieTitle) {
+      getYouTube(movieTitle, extra);
+    }
+  });
 
-//   // event listener on about the actors link
+  // event listener on about the actors link
 
-//   $(".actors").on("click", function (event) {
-//     event.preventDefault();
+  $(".actors").on("click", function (event) {
+    event.preventDefault();
 
-//     console.log("about the actors link clicked");
+    console.log("about the actors link clicked");
 
-//     //const movieTitle = getMovieTitle(event);
-//     movie = event.target.id;
-//     //getMovieTitle(event);
-//     movie = movie.substring(2);
-//     extra = "actors";
+    let movieTitle = event.target.id.toLowerCase();
+    extra = "actors";
 
-//     console.log(movie);
+    console.log(movieTitle);
 
-//     if (movie) {
-//       getYouTube(movie, extra);
-//     }
-//   });
+    if (movieTitle) {
+      getYouTube(movieTitle, extra);
+    }
+  });
 
-//   // event listener on movie soundtracks link
+  // event listener on movie soundtracks link
 
-//   $(".soundtracks").on("click", function (event) {
-//     event.preventDefault();
+  $(".soundtracks").on("click", function (event) {
+    event.preventDefault();
 
-//     console.log("soundtrack link clicked");
+    console.log("soundtrack link clicked");
 
-//     //const movieTitle = getMovieTitle(event);
-//     movie = event.target.id;
-//     //getMovieTitle(event);
-//     movie = movie.substring(2);
-//     extra = "soundtracks";
+    let movieTitle = event.target.id.toLowerCase();
+    extra = "soundtracks";
 
-//     console.log(movie);
+    console.log(movieTitle);
 
-//     if (movie) {
-//       getYouTube(movie, extra);
-//     }
-//   });
-// }
+    if (movieTitle) {
+      getYouTube(movieTitle, extra);
+    }
+  });
+}
 
 // the api for the youtube api
 
@@ -397,8 +349,9 @@ function getYouTube(movie, extra) {
   $.ajax({
     url:
       "https://youtube.googleapis.com/youtube/v3/search?q=" +
-      movie + "+movie+"+ extra +
-
+      movie +
+      "+movie+" +
+      extra +
       "&embeddable=true&maxResults=6&key=" +
       YOUTUBE_API_KEY,
 
@@ -418,66 +371,63 @@ function getYouTube(movie, extra) {
   });
 }
 
-$('#show-fav-btn').on("click", function(event){
+$("#show-fav-btn").on("click", function (event) {
   event.preventDefault();
   renderFavourites();
-})
+});
 
+function renderFavourites() {
+  $("#favourite").empty();
+  var favouriteSaved = JSON.parse(localStorage.getItem("favourites")) || [];
 
-function renderFavourites(){
-  $('#favourite').empty();
-  var favouriteSaved = JSON.parse(localStorage.getItem("favourites"))||[];
-
-  if(favouriteSaved.length ===0){
-    var noFaves = $('<h1>No favourites saved</h1>');
-    $('#favourite').append(noFaves);
+  if (favouriteSaved.length === 0) {
+    var noFaves = $("<h1>No favourites saved</h1>");
+    $("#favourite").append(noFaves);
   }
 
-  for(var i=0; i<favouriteSaved.length; i++){
-
-    var queryURL = "https://www.omdbapi.com/?t=" + favouriteSaved[i].name + "&apikey=" + OMDB_API_KEY;
-    $.ajax({
-      url: queryURL,
-      method: "GET"
-    }).then(function(response) {
-      //set the id of the card so that the movie title can be extracted on click later on. Put a string to begin the id so that the full name is stored
-      var favouriteCard = $(`
-      <div class="card favourite-card col-3">
-      <a href="javascript:void(0);"><img src=${response.Poster} id="fave-${response.Title}" data-dismiss="modal" ></a>                   
-      </div>
-    `); 
-    $('#favourite').append(favouriteCard);
-    });
-  }
-}
-
-  $('#favourite').on("click", function(event){
-    event.preventDefault();
-    //$('#modal-1').modal("hide");
-    var faveToPlay = event.target.id;
-    faveToPlay= faveToPlay.substring(5); //remove the fave- from the beginning of the string to return just the movie name
-    renderMainCard(faveToPlay);
-  })
-
-  function renderMainCard(movie) {
-    
-    $('#main-card').empty();
-    const queryURL =
+  for (var i = 0; i < favouriteSaved.length; i++) {
+    var queryURL =
       "https://www.omdbapi.com/?t=" +
-      movie +
+      favouriteSaved[i].name +
       "&apikey=" +
       OMDB_API_KEY;
     $.ajax({
       url: queryURL,
       method: "GET",
     }).then(function (response) {
-    
-      var isValidMovie = response.imdbID;
-      if(!isValidMovie){
-        return;
-      }
-      
-      var movieCard = $(`
+      //set the id of the card so that the movie title can be extracted on click later on. Put a string to begin the id so that the full name is stored
+      var favouriteCard = $(`
+      <div class="card favourite-card col-3">
+      <a href="#"><img src="${response.Poster}" id="${response.Title}" data-dismiss="modal" ></a>                   
+      </div>
+    `);
+      $("#favourite").append(favouriteCard);
+    });
+  }
+}
+
+$("#favourite").on("click", function (event) {
+  event.preventDefault();
+  //$('#modal-1').modal("hide");
+  var faveToPlay = event.target.id;
+  console.log(faveToPlay);
+  renderMainCard(faveToPlay);
+});
+
+function renderMainCard(movie) {
+  $("#main-card").empty();
+  const queryURL =
+    "https://www.omdbapi.com/?t=" + movie + "&apikey=" + OMDB_API_KEY;
+  $.ajax({
+    url: queryURL,
+    method: "GET",
+  }).then(function (response) {
+    var isValidMovie = response.imdbID;
+    if (!isValidMovie) {
+      return;
+    }
+
+    var movieCard = $(`
       <div class="card" style="width: 100%;">
       
         <img src="${response.Poster}" alt="movie poster" class="poster-main"/>
@@ -495,16 +445,16 @@ function renderFavourites(){
       <div class="movie-card-links">
         <ul class="movie-card-list">
           <li class="movie-list-items">
-          <a href="javascript:void(0);" class="trailer_main" data-searchVid="${response.Title}" onclick = "getYouTube('${response.Title}', 'trailer')" data-dismiss="modal" >watch a trailer</a>
+            <a href="#" class="trailer" id="${response.Title}" data-dismiss="modal">watch a trailer</a>
           </li>
           <li class="movie-list-items">
-            <a href="javascript:void(0);" class="reviews_main" data-searchVid="${response.Title}" onclick = "getYouTube('${response.Title}', 'review')" data-dismiss="modal" >watch a review</a>
+            <a href="#" class="review" id="${response.Title}" data-dismiss="modal">watch a review</a>
           </li>
           <li class="movie-list-items">
-            <a href="javascript:void(0);" class="actors_main" data-searchVid="${response.Title}" onclick = "getYouTube('${response.Title}', 'actors')" data-dismiss="modal" >about the actors</a>
+            <a href="#" class="actors" id="${response.Title}"data-dismiss="modal">about the actors</a>
           </li>
           <li class="movie-list-items">
-            <a href="javascript:void(0);" class="soundtracks_main" data-searchVid="${response.Title}" onclick = "getYouTube('${response.Title}', 'soundtrack')" data-dismiss="modal" >movie soundtracks</a>
+            <a href="#" class="soundtracks" id="${response.Title}" data-dismiss="modal">movie soundtracks</a>
           </li>
         </ul>
       </div>
@@ -512,7 +462,10 @@ function renderFavourites(){
   </div>
 
     `);
-    $('#main-card').append(movieCard);
+    $("#main-card").append(movieCard);
     $("#modal-3").modal("show");
-    });
-  }
+
+    // invoking this function here; so that the event listener on all the links will be listened on
+    searchYoutube();
+  });
+}
